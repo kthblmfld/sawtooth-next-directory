@@ -37,7 +37,7 @@ def make_protobuf(path, pkg_name):
     _protoc([__file__,
              '-I={}'.format(os.path.join(TOP_DIR, 'protos')),
              '--python_out={}'.format(OUT_DIR)] +
-            glob(os.path.join(TOP_DIR, 'protos/*.proto')))
+            glob(os.path.join(TOP_DIR, 'protos/**/*.proto')))
 
 
 if __name__ == '__main__':

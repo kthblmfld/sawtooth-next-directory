@@ -13,74 +13,26 @@
 // limitations under the License.
 // -----------------------------------------------------------------------------
 
-
 syntax = "proto3";
 
+package protos.model;
 
-message ProposeUpdateUserManager {
+message UserContainer {
 
-    string proposal_id = 1;
-
-    string user_id = 2;
-
-    string new_manager_id = 3;
-
-    string reason = 4;
-
-    string metadata = 5;
+   repeated User users = 2;
 
 }
 
 
-message ConfirmUpdateUserManager {
+message User {
 
-    string proposal_id = 1;
-
-    string user_id = 2;
-
-    string manager_id = 3;
-
-    string reason = 4;
-
-}
-
-
-message RejectUpdateUserManager {
-
-    string proposal_id = 1;
-
-    string user_id = 2;
-
-    string manager_id = 3;
-
-    string reason = 4;
-
-}
-
-
-message CreateUser {
-
-    string name = 1;
-
-    string user_name = 2;
-
-    string user_id = 3;
-
-    string manager_id = 4;
-
-    string metadata = 5;
-
-}
-
-
-message UpdateUser {
-
+    // The public key of the user.
     string user_id = 1;
 
-    string new_name = 2;
+    string name = 2;
 
-    string old_metadata_sha512 = 3;
+    string manager_id = 3;
 
-    string new_metadata = 4;
+    string metadata = 4;
 
 }

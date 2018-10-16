@@ -7,7 +7,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -17,775 +16,775 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='task_transaction.proto',
-  package='',
+  package='protos',
   syntax='proto3',
-  serialized_pb=_b('\n\x16task_transaction.proto\"n\n\x13ProposeAddTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"q\n\x16ProposeRemoveTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"n\n\x13ProposeAddTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"q\n\x16ProposeRemoveTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"\\\n\x13\x43onfirmAddTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"_\n\x16\x43onfirmRemoveTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"\\\n\x13\x43onfirmAddTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"_\n\x16\x43onfirmRemoveTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"[\n\x12RejectAddTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"^\n\x15RejectRemoveTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"[\n\x12RejectAddTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"^\n\x15RejectRemoveTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"]\n\nCreateTask\x12\x0f\n\x07task_id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06\x61\x64mins\x18\x03 \x03(\t\x12\x0e\n\x06owners\x18\x04 \x03(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"b\n\nUpdateTask\x12\x0f\n\x07task_id\x18\x01 \x01(\t\x12\x10\n\x08new_name\x18\x02 \x01(\t\x12\x1b\n\x13old_metadata_sha512\x18\x03 \x01(\t\x12\x14\n\x0cnew_metadata\x18\x04 \x01(\tb\x06proto3')
+  serialized_options=None,
+  serialized_pb=_b('\n\x16task_transaction.proto\x12\x06protos\"n\n\x13ProposeAddTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"q\n\x16ProposeRemoveTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"n\n\x13ProposeAddTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"q\n\x16ProposeRemoveTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"\\\n\x13\x43onfirmAddTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"_\n\x16\x43onfirmRemoveTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"\\\n\x13\x43onfirmAddTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"_\n\x16\x43onfirmRemoveTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"[\n\x12RejectAddTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"^\n\x15RejectRemoveTaskOwner\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"[\n\x12RejectAddTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"^\n\x15RejectRemoveTaskAdmin\x12\x13\n\x0bproposal_id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0e\n\x06reason\x18\x04 \x01(\t\"]\n\nCreateTask\x12\x0f\n\x07task_id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06\x61\x64mins\x18\x03 \x03(\t\x12\x0e\n\x06owners\x18\x04 \x03(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"b\n\nUpdateTask\x12\x0f\n\x07task_id\x18\x01 \x01(\t\x12\x10\n\x08new_name\x18\x02 \x01(\t\x12\x1b\n\x13old_metadata_sha512\x18\x03 \x01(\t\x12\x14\n\x0cnew_metadata\x18\x04 \x01(\tb\x06proto3')
 )
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
 
 _PROPOSEADDTASKOWNER = _descriptor.Descriptor(
   name='ProposeAddTaskOwner',
-  full_name='ProposeAddTaskOwner',
+  full_name='protos.ProposeAddTaskOwner',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='ProposeAddTaskOwner.proposal_id', index=0,
+      name='proposal_id', full_name='protos.ProposeAddTaskOwner.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='ProposeAddTaskOwner.task_id', index=1,
+      name='task_id', full_name='protos.ProposeAddTaskOwner.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='ProposeAddTaskOwner.user_id', index=2,
+      name='user_id', full_name='protos.ProposeAddTaskOwner.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='ProposeAddTaskOwner.reason', index=3,
+      name='reason', full_name='protos.ProposeAddTaskOwner.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='metadata', full_name='ProposeAddTaskOwner.metadata', index=4,
+      name='metadata', full_name='protos.ProposeAddTaskOwner.metadata', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=26,
-  serialized_end=136,
+  serialized_start=34,
+  serialized_end=144,
 )
 
 
 _PROPOSEREMOVETASKOWNER = _descriptor.Descriptor(
   name='ProposeRemoveTaskOwner',
-  full_name='ProposeRemoveTaskOwner',
+  full_name='protos.ProposeRemoveTaskOwner',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='ProposeRemoveTaskOwner.proposal_id', index=0,
+      name='proposal_id', full_name='protos.ProposeRemoveTaskOwner.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='ProposeRemoveTaskOwner.task_id', index=1,
+      name='task_id', full_name='protos.ProposeRemoveTaskOwner.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='ProposeRemoveTaskOwner.user_id', index=2,
+      name='user_id', full_name='protos.ProposeRemoveTaskOwner.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='ProposeRemoveTaskOwner.reason', index=3,
+      name='reason', full_name='protos.ProposeRemoveTaskOwner.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='metadata', full_name='ProposeRemoveTaskOwner.metadata', index=4,
+      name='metadata', full_name='protos.ProposeRemoveTaskOwner.metadata', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=138,
-  serialized_end=251,
+  serialized_start=146,
+  serialized_end=259,
 )
 
 
 _PROPOSEADDTASKADMIN = _descriptor.Descriptor(
   name='ProposeAddTaskAdmin',
-  full_name='ProposeAddTaskAdmin',
+  full_name='protos.ProposeAddTaskAdmin',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='ProposeAddTaskAdmin.proposal_id', index=0,
+      name='proposal_id', full_name='protos.ProposeAddTaskAdmin.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='ProposeAddTaskAdmin.task_id', index=1,
+      name='task_id', full_name='protos.ProposeAddTaskAdmin.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='ProposeAddTaskAdmin.user_id', index=2,
+      name='user_id', full_name='protos.ProposeAddTaskAdmin.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='ProposeAddTaskAdmin.reason', index=3,
+      name='reason', full_name='protos.ProposeAddTaskAdmin.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='metadata', full_name='ProposeAddTaskAdmin.metadata', index=4,
+      name='metadata', full_name='protos.ProposeAddTaskAdmin.metadata', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=253,
-  serialized_end=363,
+  serialized_start=261,
+  serialized_end=371,
 )
 
 
 _PROPOSEREMOVETASKADMIN = _descriptor.Descriptor(
   name='ProposeRemoveTaskAdmin',
-  full_name='ProposeRemoveTaskAdmin',
+  full_name='protos.ProposeRemoveTaskAdmin',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='ProposeRemoveTaskAdmin.proposal_id', index=0,
+      name='proposal_id', full_name='protos.ProposeRemoveTaskAdmin.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='ProposeRemoveTaskAdmin.task_id', index=1,
+      name='task_id', full_name='protos.ProposeRemoveTaskAdmin.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='ProposeRemoveTaskAdmin.user_id', index=2,
+      name='user_id', full_name='protos.ProposeRemoveTaskAdmin.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='ProposeRemoveTaskAdmin.reason', index=3,
+      name='reason', full_name='protos.ProposeRemoveTaskAdmin.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='metadata', full_name='ProposeRemoveTaskAdmin.metadata', index=4,
+      name='metadata', full_name='protos.ProposeRemoveTaskAdmin.metadata', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=365,
-  serialized_end=478,
+  serialized_start=373,
+  serialized_end=486,
 )
 
 
 _CONFIRMADDTASKOWNER = _descriptor.Descriptor(
   name='ConfirmAddTaskOwner',
-  full_name='ConfirmAddTaskOwner',
+  full_name='protos.ConfirmAddTaskOwner',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='ConfirmAddTaskOwner.proposal_id', index=0,
+      name='proposal_id', full_name='protos.ConfirmAddTaskOwner.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='ConfirmAddTaskOwner.task_id', index=1,
+      name='task_id', full_name='protos.ConfirmAddTaskOwner.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='ConfirmAddTaskOwner.user_id', index=2,
+      name='user_id', full_name='protos.ConfirmAddTaskOwner.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='ConfirmAddTaskOwner.reason', index=3,
+      name='reason', full_name='protos.ConfirmAddTaskOwner.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=480,
-  serialized_end=572,
+  serialized_start=488,
+  serialized_end=580,
 )
 
 
 _CONFIRMREMOVETASKOWNER = _descriptor.Descriptor(
   name='ConfirmRemoveTaskOwner',
-  full_name='ConfirmRemoveTaskOwner',
+  full_name='protos.ConfirmRemoveTaskOwner',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='ConfirmRemoveTaskOwner.proposal_id', index=0,
+      name='proposal_id', full_name='protos.ConfirmRemoveTaskOwner.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='ConfirmRemoveTaskOwner.task_id', index=1,
+      name='task_id', full_name='protos.ConfirmRemoveTaskOwner.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='ConfirmRemoveTaskOwner.user_id', index=2,
+      name='user_id', full_name='protos.ConfirmRemoveTaskOwner.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='ConfirmRemoveTaskOwner.reason', index=3,
+      name='reason', full_name='protos.ConfirmRemoveTaskOwner.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=574,
-  serialized_end=669,
+  serialized_start=582,
+  serialized_end=677,
 )
 
 
 _CONFIRMADDTASKADMIN = _descriptor.Descriptor(
   name='ConfirmAddTaskAdmin',
-  full_name='ConfirmAddTaskAdmin',
+  full_name='protos.ConfirmAddTaskAdmin',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='ConfirmAddTaskAdmin.proposal_id', index=0,
+      name='proposal_id', full_name='protos.ConfirmAddTaskAdmin.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='ConfirmAddTaskAdmin.task_id', index=1,
+      name='task_id', full_name='protos.ConfirmAddTaskAdmin.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='ConfirmAddTaskAdmin.user_id', index=2,
+      name='user_id', full_name='protos.ConfirmAddTaskAdmin.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='ConfirmAddTaskAdmin.reason', index=3,
+      name='reason', full_name='protos.ConfirmAddTaskAdmin.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=671,
-  serialized_end=763,
+  serialized_start=679,
+  serialized_end=771,
 )
 
 
 _CONFIRMREMOVETASKADMIN = _descriptor.Descriptor(
   name='ConfirmRemoveTaskAdmin',
-  full_name='ConfirmRemoveTaskAdmin',
+  full_name='protos.ConfirmRemoveTaskAdmin',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='ConfirmRemoveTaskAdmin.proposal_id', index=0,
+      name='proposal_id', full_name='protos.ConfirmRemoveTaskAdmin.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='ConfirmRemoveTaskAdmin.task_id', index=1,
+      name='task_id', full_name='protos.ConfirmRemoveTaskAdmin.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='ConfirmRemoveTaskAdmin.user_id', index=2,
+      name='user_id', full_name='protos.ConfirmRemoveTaskAdmin.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='ConfirmRemoveTaskAdmin.reason', index=3,
+      name='reason', full_name='protos.ConfirmRemoveTaskAdmin.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=765,
-  serialized_end=860,
+  serialized_start=773,
+  serialized_end=868,
 )
 
 
 _REJECTADDTASKOWNER = _descriptor.Descriptor(
   name='RejectAddTaskOwner',
-  full_name='RejectAddTaskOwner',
+  full_name='protos.RejectAddTaskOwner',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='RejectAddTaskOwner.proposal_id', index=0,
+      name='proposal_id', full_name='protos.RejectAddTaskOwner.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='RejectAddTaskOwner.task_id', index=1,
+      name='task_id', full_name='protos.RejectAddTaskOwner.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='RejectAddTaskOwner.user_id', index=2,
+      name='user_id', full_name='protos.RejectAddTaskOwner.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='RejectAddTaskOwner.reason', index=3,
+      name='reason', full_name='protos.RejectAddTaskOwner.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=862,
-  serialized_end=953,
+  serialized_start=870,
+  serialized_end=961,
 )
 
 
 _REJECTREMOVETASKOWNER = _descriptor.Descriptor(
   name='RejectRemoveTaskOwner',
-  full_name='RejectRemoveTaskOwner',
+  full_name='protos.RejectRemoveTaskOwner',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='RejectRemoveTaskOwner.proposal_id', index=0,
+      name='proposal_id', full_name='protos.RejectRemoveTaskOwner.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='RejectRemoveTaskOwner.task_id', index=1,
+      name='task_id', full_name='protos.RejectRemoveTaskOwner.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='RejectRemoveTaskOwner.user_id', index=2,
+      name='user_id', full_name='protos.RejectRemoveTaskOwner.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='RejectRemoveTaskOwner.reason', index=3,
+      name='reason', full_name='protos.RejectRemoveTaskOwner.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=955,
-  serialized_end=1049,
+  serialized_start=963,
+  serialized_end=1057,
 )
 
 
 _REJECTADDTASKADMIN = _descriptor.Descriptor(
   name='RejectAddTaskAdmin',
-  full_name='RejectAddTaskAdmin',
+  full_name='protos.RejectAddTaskAdmin',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='RejectAddTaskAdmin.proposal_id', index=0,
+      name='proposal_id', full_name='protos.RejectAddTaskAdmin.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='RejectAddTaskAdmin.task_id', index=1,
+      name='task_id', full_name='protos.RejectAddTaskAdmin.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='RejectAddTaskAdmin.user_id', index=2,
+      name='user_id', full_name='protos.RejectAddTaskAdmin.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='RejectAddTaskAdmin.reason', index=3,
+      name='reason', full_name='protos.RejectAddTaskAdmin.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1051,
-  serialized_end=1142,
+  serialized_start=1059,
+  serialized_end=1150,
 )
 
 
 _REJECTREMOVETASKADMIN = _descriptor.Descriptor(
   name='RejectRemoveTaskAdmin',
-  full_name='RejectRemoveTaskAdmin',
+  full_name='protos.RejectRemoveTaskAdmin',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='proposal_id', full_name='RejectRemoveTaskAdmin.proposal_id', index=0,
+      name='proposal_id', full_name='protos.RejectRemoveTaskAdmin.proposal_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='RejectRemoveTaskAdmin.task_id', index=1,
+      name='task_id', full_name='protos.RejectRemoveTaskAdmin.task_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='RejectRemoveTaskAdmin.user_id', index=2,
+      name='user_id', full_name='protos.RejectRemoveTaskAdmin.user_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='reason', full_name='RejectRemoveTaskAdmin.reason', index=3,
+      name='reason', full_name='protos.RejectRemoveTaskAdmin.reason', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1144,
-  serialized_end=1238,
+  serialized_start=1152,
+  serialized_end=1246,
 )
 
 
 _CREATETASK = _descriptor.Descriptor(
   name='CreateTask',
-  full_name='CreateTask',
+  full_name='protos.CreateTask',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='CreateTask.task_id', index=0,
+      name='task_id', full_name='protos.CreateTask.task_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='CreateTask.name', index=1,
+      name='name', full_name='protos.CreateTask.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='admins', full_name='CreateTask.admins', index=2,
+      name='admins', full_name='protos.CreateTask.admins', index=2,
       number=3, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='owners', full_name='CreateTask.owners', index=3,
+      name='owners', full_name='protos.CreateTask.owners', index=3,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='metadata', full_name='CreateTask.metadata', index=4,
+      name='metadata', full_name='protos.CreateTask.metadata', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1240,
-  serialized_end=1333,
+  serialized_start=1248,
+  serialized_end=1341,
 )
 
 
 _UPDATETASK = _descriptor.Descriptor(
   name='UpdateTask',
-  full_name='UpdateTask',
+  full_name='protos.UpdateTask',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='UpdateTask.task_id', index=0,
+      name='task_id', full_name='protos.UpdateTask.task_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='new_name', full_name='UpdateTask.new_name', index=1,
+      name='new_name', full_name='protos.UpdateTask.new_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='old_metadata_sha512', full_name='UpdateTask.old_metadata_sha512', index=2,
+      name='old_metadata_sha512', full_name='protos.UpdateTask.old_metadata_sha512', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='new_metadata', full_name='UpdateTask.new_metadata', index=3,
+      name='new_metadata', full_name='protos.UpdateTask.new_metadata', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1335,
-  serialized_end=1433,
+  serialized_start=1343,
+  serialized_end=1441,
 )
 
 DESCRIPTOR.message_types_by_name['ProposeAddTaskOwner'] = _PROPOSEADDTASKOWNER
@@ -802,102 +801,103 @@ DESCRIPTOR.message_types_by_name['RejectAddTaskAdmin'] = _REJECTADDTASKADMIN
 DESCRIPTOR.message_types_by_name['RejectRemoveTaskAdmin'] = _REJECTREMOVETASKADMIN
 DESCRIPTOR.message_types_by_name['CreateTask'] = _CREATETASK
 DESCRIPTOR.message_types_by_name['UpdateTask'] = _UPDATETASK
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ProposeAddTaskOwner = _reflection.GeneratedProtocolMessageType('ProposeAddTaskOwner', (_message.Message,), dict(
   DESCRIPTOR = _PROPOSEADDTASKOWNER,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:ProposeAddTaskOwner)
+  # @@protoc_insertion_point(class_scope:protos.ProposeAddTaskOwner)
   ))
 _sym_db.RegisterMessage(ProposeAddTaskOwner)
 
 ProposeRemoveTaskOwner = _reflection.GeneratedProtocolMessageType('ProposeRemoveTaskOwner', (_message.Message,), dict(
   DESCRIPTOR = _PROPOSEREMOVETASKOWNER,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:ProposeRemoveTaskOwner)
+  # @@protoc_insertion_point(class_scope:protos.ProposeRemoveTaskOwner)
   ))
 _sym_db.RegisterMessage(ProposeRemoveTaskOwner)
 
 ProposeAddTaskAdmin = _reflection.GeneratedProtocolMessageType('ProposeAddTaskAdmin', (_message.Message,), dict(
   DESCRIPTOR = _PROPOSEADDTASKADMIN,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:ProposeAddTaskAdmin)
+  # @@protoc_insertion_point(class_scope:protos.ProposeAddTaskAdmin)
   ))
 _sym_db.RegisterMessage(ProposeAddTaskAdmin)
 
 ProposeRemoveTaskAdmin = _reflection.GeneratedProtocolMessageType('ProposeRemoveTaskAdmin', (_message.Message,), dict(
   DESCRIPTOR = _PROPOSEREMOVETASKADMIN,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:ProposeRemoveTaskAdmin)
+  # @@protoc_insertion_point(class_scope:protos.ProposeRemoveTaskAdmin)
   ))
 _sym_db.RegisterMessage(ProposeRemoveTaskAdmin)
 
 ConfirmAddTaskOwner = _reflection.GeneratedProtocolMessageType('ConfirmAddTaskOwner', (_message.Message,), dict(
   DESCRIPTOR = _CONFIRMADDTASKOWNER,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:ConfirmAddTaskOwner)
+  # @@protoc_insertion_point(class_scope:protos.ConfirmAddTaskOwner)
   ))
 _sym_db.RegisterMessage(ConfirmAddTaskOwner)
 
 ConfirmRemoveTaskOwner = _reflection.GeneratedProtocolMessageType('ConfirmRemoveTaskOwner', (_message.Message,), dict(
   DESCRIPTOR = _CONFIRMREMOVETASKOWNER,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:ConfirmRemoveTaskOwner)
+  # @@protoc_insertion_point(class_scope:protos.ConfirmRemoveTaskOwner)
   ))
 _sym_db.RegisterMessage(ConfirmRemoveTaskOwner)
 
 ConfirmAddTaskAdmin = _reflection.GeneratedProtocolMessageType('ConfirmAddTaskAdmin', (_message.Message,), dict(
   DESCRIPTOR = _CONFIRMADDTASKADMIN,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:ConfirmAddTaskAdmin)
+  # @@protoc_insertion_point(class_scope:protos.ConfirmAddTaskAdmin)
   ))
 _sym_db.RegisterMessage(ConfirmAddTaskAdmin)
 
 ConfirmRemoveTaskAdmin = _reflection.GeneratedProtocolMessageType('ConfirmRemoveTaskAdmin', (_message.Message,), dict(
   DESCRIPTOR = _CONFIRMREMOVETASKADMIN,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:ConfirmRemoveTaskAdmin)
+  # @@protoc_insertion_point(class_scope:protos.ConfirmRemoveTaskAdmin)
   ))
 _sym_db.RegisterMessage(ConfirmRemoveTaskAdmin)
 
 RejectAddTaskOwner = _reflection.GeneratedProtocolMessageType('RejectAddTaskOwner', (_message.Message,), dict(
   DESCRIPTOR = _REJECTADDTASKOWNER,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:RejectAddTaskOwner)
+  # @@protoc_insertion_point(class_scope:protos.RejectAddTaskOwner)
   ))
 _sym_db.RegisterMessage(RejectAddTaskOwner)
 
 RejectRemoveTaskOwner = _reflection.GeneratedProtocolMessageType('RejectRemoveTaskOwner', (_message.Message,), dict(
   DESCRIPTOR = _REJECTREMOVETASKOWNER,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:RejectRemoveTaskOwner)
+  # @@protoc_insertion_point(class_scope:protos.RejectRemoveTaskOwner)
   ))
 _sym_db.RegisterMessage(RejectRemoveTaskOwner)
 
 RejectAddTaskAdmin = _reflection.GeneratedProtocolMessageType('RejectAddTaskAdmin', (_message.Message,), dict(
   DESCRIPTOR = _REJECTADDTASKADMIN,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:RejectAddTaskAdmin)
+  # @@protoc_insertion_point(class_scope:protos.RejectAddTaskAdmin)
   ))
 _sym_db.RegisterMessage(RejectAddTaskAdmin)
 
 RejectRemoveTaskAdmin = _reflection.GeneratedProtocolMessageType('RejectRemoveTaskAdmin', (_message.Message,), dict(
   DESCRIPTOR = _REJECTREMOVETASKADMIN,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:RejectRemoveTaskAdmin)
+  # @@protoc_insertion_point(class_scope:protos.RejectRemoveTaskAdmin)
   ))
 _sym_db.RegisterMessage(RejectRemoveTaskAdmin)
 
 CreateTask = _reflection.GeneratedProtocolMessageType('CreateTask', (_message.Message,), dict(
   DESCRIPTOR = _CREATETASK,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:CreateTask)
+  # @@protoc_insertion_point(class_scope:protos.CreateTask)
   ))
 _sym_db.RegisterMessage(CreateTask)
 
 UpdateTask = _reflection.GeneratedProtocolMessageType('UpdateTask', (_message.Message,), dict(
   DESCRIPTOR = _UPDATETASK,
   __module__ = 'task_transaction_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateTask)
+  # @@protoc_insertion_point(class_scope:protos.UpdateTask)
   ))
 _sym_db.RegisterMessage(UpdateTask)
 

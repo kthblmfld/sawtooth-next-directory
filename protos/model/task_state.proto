@@ -11,16 +11,43 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+
 
 syntax = "proto3";
 
-message UpdateProposal {
+package protos.model;
 
-    string proposal_id = 1;
+message TaskAttributesContainer {
 
-    string old_metadata_sha512 = 2;
+    repeated TaskAttributes task_attributes = 1;
 
-    string new_metadata = 3;
+}
+
+
+message TaskAttributes {
+
+    string task_id = 1;
+
+    string name = 2;
+
+    string metadata = 3;
+
+}
+
+
+message TaskRelationshipContainer {
+
+    repeated TaskRelationship relationships = 1;
+
+}
+
+
+// This represents a Task's ( Owners | Admins )
+message TaskRelationship {
+
+    string task_id = 1;
+
+    repeated string identifiers = 2;
 
 }

@@ -15,7 +15,7 @@
 
 syntax = "proto3";
 
-
+package protos;
 
 
 message RBACPayload {

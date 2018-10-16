@@ -15,6 +15,7 @@
 
 syntax = "proto3";
 
+package protos.model;
 
 // This container is only needed for hash collisions.
 message RoleAttributesContainer {
