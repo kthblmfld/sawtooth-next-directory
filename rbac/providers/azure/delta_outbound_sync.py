@@ -260,8 +260,8 @@ def outbound_sync_listener():
             )
             LOGGER.debug(queue_entry)
 
-            datatype = queue_entry["data_type"]
-            LOGGER.info("Putting %s into AAD...", datatype)
+            data_type = queue_entry["data_type"]
+            LOGGER.info("Putting %s into AAD...", data_type)
             if check_entry_AAD(queue_entry):
                 update_entry_AAD(queue_entry)
             else:
@@ -273,7 +273,7 @@ def outbound_sync_listener():
             LOGGER.info("Deleting queue entry from outbound queue...")
             entry_id = queue_entry["id"]
             delete_entry_outbound_queue(entry_id)
-        except ExpectedError as err:
+        except ExpectedError:
             time.sleep(DELAY)
         except Exception as err:
             LOGGER.exception(err)
