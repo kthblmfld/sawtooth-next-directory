@@ -13,15 +13,17 @@
 # limitations under the License.
 # ------------------------------------------------------------------------------
 
-import sys
-import time
 import logging
+import time
+
 import rethinkdb as r
 from tornado import gen
 
+from rbac.providers.error.validation import LdapValidationException
+from rbac.providers.ldap.delta_outbound_sync import process_entry
+from rbac.providers.ldap.ldap_message_validator import validate
+
 LOGGER = logging.getLogger(__name__)
-LOGGER.level = logging.DEBUG
-LOGGER.addHandler(logging.StreamHandler(sys.stdout))
 
 DB_HOST = "rethink"
 DB_PORT = 28015
@@ -33,22 +35,34 @@ r.set_loop_type("tornado")
 
 
 @gen.coroutine
-def print_feed_change_data():
+def export_feed_change_to_ldap():
     connected = False
+    feed = None
+    rethink_header = "new_val"
 
     while not connected:
         try:
             connection = yield r.connect(DB_HOST, DB_PORT, DB_NAME)
             feed = yield r.table(DB_TABLE).changes().run(connection)
             connected = True
-            while (yield feed.fetch_next()):
-                item = yield feed.next()
-                LOGGER.debug(item)
-        except r.ReqlRuntimeError as e:
+        except r.ReqlRuntimeError as re:
             LOGGER.info(
                 "Attempt to connect to %s threw exception: %s. Retrying in %s seconds",
                 DB_TABLE,
-                str(e),
+                str(re),
                 RETRY_INTERVAL_SECONDS_TABLE_READY,
             )
             time.sleep(RETRY_INTERVAL_SECONDS_TABLE_READY)
+
+    while (yield feed.fetch_next()):
+        new_record = yield feed.next()
+        content = new_record[rethink_header]
+
+        try:
+            validate(content)
+            process_entry(content, r)
+        except LdapValidationException as le:
+            # TODO: Determine what to do with inadequate ldap data in the queue. Log and drop?
+            LOGGER.error(
+                "Ldap payload: %s encountered a validation error: %s", content, le
+            )
