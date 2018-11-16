@@ -18,6 +18,7 @@ from rbac.providers.error.validation import LdapValidationException
 
 
 def test_validate_missing_data_type():
+    """ensures a failure occurs when 'data_type' field is missing"""
     ldap_payload = {"data": {"distinguished_name": "yo"}}
 
     try:
@@ -27,6 +28,7 @@ def test_validate_missing_data_type():
 
 
 def test_validate_missing_data_field():
+    """ensures a failure occurs when 'data' field is missing"""
     ldap_payload = {"data_type": "user"}
 
     try:
@@ -36,18 +38,18 @@ def test_validate_missing_data_field():
 
 
 def test_validate_invalid_data_type():
+    """ensures a failure occurs when 'data_type' field is invalid"""
     ldap_payload = {"data": {"distinguished_name": "yo"}, "data_type": "no"}
 
     try:
         ldap_message_validator.validate(ldap_payload)
     except LdapValidationException as lde:
-        assert (
-            str(lde)
-            == "Invalid value for 'data_type'. 'data_type' must be in: ['user', 'group']"
-        )
+        assert (str(lde) == "Invalid value for 'data_type'. 'data_type' must be in: ['user', 'group']"
+                )
 
 
 def test_validate_missing_distinguished_name():
+    """ensures a failure occurs when 'distinguished_name' field is missing"""
     ldap_payload = {"data": {}, "data_type": "user"}
 
     try:
@@ -57,6 +59,7 @@ def test_validate_missing_distinguished_name():
 
 
 def test_validate_empty_distinguished_name():
+    """ensures a failure occurs when 'distinguished_name' field is empty"""
     ldap_payload = {"data": {"distinguished_name": ""}, "data_type": "user"}
 
     try:

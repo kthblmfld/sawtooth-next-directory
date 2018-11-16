@@ -204,7 +204,7 @@ def outbound_sync_listener():
             LOGGER.debug(queue_entry)
 
             data_type = queue_entry["data_type"]
-            LOGGER.info("Putting %s into AAD...", data_type)
+            LOGGER.info("Putting %s into aad...", data_type)
             if is_entry_in_aad(queue_entry):
                 update_entry_aad(queue_entry)
             else:

@@ -87,13 +87,8 @@ def connect_to_ldap():
         password=LDAP_PASS,
         receive_timeout=LDAP_RECEIVE_TIMEOUT_SECONDS,
     )
-    try:
-        ldap_conn.bind()
-    except LDAPSocketOpenError as lse:
-        LOGGER.error(
-            "Failed to open a connection to Ldap. Aborting message transmission. Error: %s",
-            lse,
-        )
+
+    ldap_conn.bind()
     return ldap_conn
 
 
