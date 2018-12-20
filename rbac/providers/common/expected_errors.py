@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ------------------------------------------------------------------------------
-
-import sys
-import logging
+""" Expected Errors
+"""
 import rethinkdb as r
+from rbac.common.logs import getLogger
 
-LOGGER = logging.getLogger(__name__)
-LOGGER.level = logging.INFO
-LOGGER.addHandler(logging.StreamHandler(sys.stdout))
+LOGGER = getLogger(__name__)
 
 
 class ExpectedError(Exception):
@@ -44,11 +42,3 @@ class ExpectedError(Exception):
     def __str__(self):
         super(ExpectedError, self).__str__()
         return self.message
-
-
-class DatabaseConnectionException(Exception):
-    """Thrown when all attempts to connect to the database have failed"""
-
-
-class ValidationException(Exception):
-    """Thrown when an LDAP-formatted message fails a validation"""

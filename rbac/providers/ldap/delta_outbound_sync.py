@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ------------------------------------------------------------------------------
-"""Delta Outbound Sync for LDAP to get changes from NEXT into LDAP."""
-import logging
+""" Delta Outbound Sync for LDAP to get changes from NEXT into LDAP.
+"""
 import os
 import time
 
 import ldap3
 from ldap3 import MODIFY_REPLACE
+from rbac.common.logs import getLogger
 
 from rbac.providers.common.db_queries import (
     connect_to_db,
@@ -27,7 +28,8 @@ from rbac.providers.common.db_queries import (
     delete_entry_queue,
 )
 from rbac.providers.common import ldap_connector
-from rbac.providers.common.expected_errors import ExpectedError, ValidationException
+from rbac.providers.common.expected_errors import ExpectedError
+from rbac.providers.common.provider_errors import ValidationException
 from rbac.providers.common.outbound_filters import (
     outbound_user_filter,
     outbound_group_filter,
@@ -37,8 +39,7 @@ from rbac.providers.ldap.ldap_validator import (
     validate_update_entry,
 )
 
-logging.basicConfig(level=logging.INFO)
-LOGGER = logging.getLogger(__name__)
+LOGGER = getLogger(__name__)
 
 LISTENER_POLLING_DELAY = int(os.getenv("LISTENER_POLLING_DELAY", "1"))
 LDAP_DC = os.getenv("LDAP_DC")
@@ -183,7 +184,6 @@ def ldap_outbound_listener():
 
     while True:
         try:
-            LOGGER.debug("Peeking at outbound queue")
             queue_entry = peek_at_queue("outbound_queue", LDAP_DC)
             LOGGER.info(
                 "Received queue entry %s from outbound queue...", queue_entry["id"]
@@ -207,13 +207,6 @@ def ldap_outbound_listener():
             LOGGER.info("No outbound payload possible.  Deleting entry %s", queue_entry)
             delete_entry_queue(queue_entry["id"], "outbound_queue")
         except ExpectedError as err:
-            LOGGER.debug(
-                (
-                    "%s Repolling after %s seconds...",
-                    err.__str__,
-                    "LISTENER_POLLING_DELAY",
-                )
-            )
             time.sleep(LISTENER_POLLING_DELAY)
         except Exception as err:
             LOGGER.exception(err)

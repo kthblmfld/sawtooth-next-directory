@@ -12,26 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ------------------------------------------------------------------------------
-""" Threading classes used for provider syncs
-"""
-import threading
-
-from rbac.common.logs import getLogger
-
-LOGGER = getLogger(__name__)
 
 
-class DeltaSyncThread(threading.Thread):
-    """Custom class that runs a delta sync listener in its thread."""
+class DatabaseConnectionException(Exception):
+    """Thrown when all attempts to connect to the database have failed"""
 
-    def __init__(self, name, function):
-        """Initialize the OutboundSyncThread class"""
-        threading.Thread.__init__(self)
-        self.name = "{} Delta Sync Thread".format(name)
-        self.function_to_thread = function
 
-    def run(self):
-        """Start the OutboundSyncThread"""
-        LOGGER.info("Starting %s", self.name)
-        self.function_to_thread()
-        LOGGER.info("Exiting %s", self.name)
+class ValidationException(Exception):
+    """Thrown when an LDAP-formatted message fails a validation"""
+
+
+class LdapBindException(Exception):
+    """Thrown when an LDAP bind() attempt returns false"""

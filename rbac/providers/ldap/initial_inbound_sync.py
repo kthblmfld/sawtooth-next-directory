@@ -17,19 +17,15 @@
 """ LDAP inbound initial sync
 """
 
-import json
-import logging
 import os
-import sys
 import threading
-from datetime import datetime, timezone
-
+import time
 import ldap3
 import rethinkdb as r
-
+from rbac.common.logs import getLogger
+from rbac.providers.common import ldap_connector
 from rbac.providers.common.common import check_last_sync
 from rbac.providers.common.db_queries import connect_to_db, save_sync_time
-from rbac.providers.common import ldap_connector
 from rbac.providers.common.inbound_filters import (
     inbound_user_filter,
     inbound_group_filter,
@@ -37,9 +33,7 @@ from rbac.providers.common.inbound_filters import (
 from rbac.providers.common.rbac_transactions import add_transaction
 from rbac.providers.ldap.delta_inbound_sync import inbound_delta_sync
 
-LOGGER = logging.getLogger(__name__)
-LOGGER.level = logging.DEBUG
-LOGGER.addHandler(logging.StreamHandler(sys.stdout))
+LOGGER = getLogger(__name__)
 
 DB_HOST = os.getenv("DB_HOST", "rethink")
 DB_PORT = int(os.getenv("DB_PORT", "28015"))
@@ -67,43 +61,39 @@ def fetch_ldap_data(data_type):
 
     ldap_connection = ldap_connector.await_connection(LDAP_SERVER, LDAP_USER, LDAP_PASS)
 
-    ldap_connection.search(
-        search_base=LDAP_DC,
-        search_filter=search_filter,
-        attributes=ldap3.ALL_ATTRIBUTES,
-    )
-    if ldap_connection is None:
-        LOGGER.error("Ldap connection creation failed. Skipping Ldap fetch")
-    else:
+    search_parameters = {
+        "search_base": LDAP_DC,
+        "search_filter": search_filter,
+        "attributes": ldap3.ALL_ATTRIBUTES,
+        "paged_size": LDAP_SEARCH_PAGE_SIZE,
+    }
 
-        search_parameters = {
-            "search_base": LDAP_DC,
-            "search_filter": search_filter,
-            "attributes": ldap3.ALL_ATTRIBUTES,
-            "paged_size": LDAP_SEARCH_PAGE_SIZE,
-        }
+    entry_count = 0
+    LOGGER.info("Importing users..")
 
-        index = 1
-        while True:
+    while True:
+        start_time = time.clock()
+        ldap_connection.search(**search_parameters)
+        record_count = len(ldap_connection.entries)
+        LOGGER.info(
+            "Got %s entries in %s seconds.",
+            record_count,
+            "%.3f" % (time.clock() - start_time),
+        )
+        for entry in ldap_connection.entries:
+            entry_count = entry_count + 1
+            insert_to_db(entry, data_type=data_type)
 
-            ldap_connection.search(**search_parameters)
-            for entry in ldap_connection.entries:
+        # 1.2.840.113556.1.4.319 is the OID/extended control for PagedResults
+        cookie = ldap_connection.result["controls"]["1.2.840.113556.1.4.319"]["value"][
+            "cookie"
+        ]
 
-                index = index + 1
-                if index % LDAP_SEARCH_PAGE_SIZE == 0:
-                    LOGGER.info("Processing record: %s", index)
-
-                insert_to_db(entry, data_type=data_type)
-
-                # 1.2.840.113556.1.4.319 is the OID/extended control for PagedResults
-                cookie = ldap_connection.result["controls"]["1.2.840.113556.1.4.319"][
-                    "value"
-                ]["cookie"]
-                if cookie:
-                    search_parameters["paged_cookie"] = cookie
-                else:
-                    LOGGER.info("Imported %s entries from Active Directory", index)
-                    break
+        if cookie:
+            search_parameters["paged_cookie"] = cookie
+        else:
+            LOGGER.info("Imported %s entries from Active Directory", entry_count)
+            break
 
     sync_source = "ldap-" + data_type
     save_sync_time(LDAP_DC, sync_source, "initial")
@@ -111,32 +101,20 @@ def fetch_ldap_data(data_type):
 
 def insert_to_db(entry, data_type):
     """Insert user or group individually to RethinkDB from dict of data and begins delta sync timer."""
-
-    entry_json = json.loads(entry.entry_to_json())
-    entry_attributes = entry_json["attributes"]
-
-    for attribute in entry_attributes:
-
-        try:
-            if len(entry_attributes[attribute]) > 1:
-                entry[attribute] = entry_attributes[attribute]
-            else:
-                entry[attribute] = entry_attributes[attribute][0]
-        except TypeError:
-            # TODO: There are a lot of mapping attempts that end up in this block. Revisit'
-            LOGGER.warning("Could not assign: %s", entry_attributes[attribute][0])
-
     if data_type == "user":
-        standardized_entry = inbound_user_filter(entry, "ldap")
+        standard_entry = inbound_user_filter(entry, "ldap")
     elif data_type == "group":
-        standardized_entry = inbound_group_filter(entry, "ldap")
+        standard_entry = inbound_group_filter(entry, "ldap")
+    else:
+        LOGGER.warning("unsupported data type: %s", data_type)
+        return
+
     inbound_entry = {
-        "data": standardized_entry,
+        "data": standard_entry,
         "data_type": data_type,
         "sync_type": "initial",
-        "timestamp": datetime.now().replace(tzinfo=timezone.utc).isoformat(),
+        "timestamp": r.now(),
         "provider_id": LDAP_DC,
-        "raw": entry_json,
     }
     add_transaction(inbound_entry)
     r.table("inbound_queue").insert(inbound_entry).run()
@@ -170,21 +148,21 @@ def initialize_ldap_sync():
             LOGGER.info("Getting AD Users...")
             fetch_ldap_data(data_type="user")
 
-            LOGGER.info("Initial AD user upload completed.")
+            LOGGER.debug("Initial AD user upload completed.")
 
-        # Check to see if Group Sync has occured.  If not - Sync
+        # Check to see if Group Sync has occurred.  If not - Sync
         db_group_payload = check_last_sync("ldap-group", "initial")
         if not db_group_payload:
-            LOGGER.info(
+            LOGGER.debug(
                 "No initial AD group sync was found. Starting initial AD group sync now."
             )
-            LOGGER.info("Getting Groups with Members...")
+            LOGGER.debug("Getting Groups with Members...")
             fetch_ldap_data(data_type="group")
 
-            LOGGER.info("Initial AD group upload completed.")
+            LOGGER.debug("Initial AD group upload completed.")
 
         if db_user_payload and db_group_payload:
-            LOGGER.info("The LDAP initial sync has already been run.")
+            LOGGER.debug("The LDAP initial sync has already been run.")
 
         # Start the inbound delta sync
         initiate_delta_sync()
