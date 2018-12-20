@@ -67,6 +67,11 @@ def fetch_ldap_data(data_type):
 
     ldap_connection = ldap_connector.await_connection(LDAP_SERVER, LDAP_USER, LDAP_PASS)
 
+    ldap_connection.search(
+        search_base=LDAP_DC,
+        search_filter=search_filter,
+        attributes=ldap3.ALL_ATTRIBUTES,
+    )
     if ldap_connection is None:
         LOGGER.error("Ldap connection creation failed. Skipping Ldap fetch")
     else:
