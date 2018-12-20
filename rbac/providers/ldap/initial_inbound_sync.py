@@ -67,43 +67,34 @@ def fetch_ldap_data(data_type):
 
     ldap_connection = ldap_connector.await_connection(LDAP_SERVER, LDAP_USER, LDAP_PASS)
 
-    ldap_connection.search(
-        search_base=LDAP_DC,
-        search_filter=search_filter,
-        attributes=ldap3.ALL_ATTRIBUTES,
-    )
-    if ldap_connection is None:
-        LOGGER.error("Ldap connection creation failed. Skipping Ldap fetch")
-    else:
+    search_parameters = {
+        "search_base": LDAP_DC,
+        "search_filter": search_filter,
+        "attributes": ldap3.ALL_ATTRIBUTES,
+        "paged_size": LDAP_SEARCH_PAGE_SIZE,
+    }
 
-        search_parameters = {
-            "search_base": LDAP_DC,
-            "search_filter": search_filter,
-            "attributes": ldap3.ALL_ATTRIBUTES,
-            "paged_size": LDAP_SEARCH_PAGE_SIZE,
-        }
+    index = 1
+    while True:
 
-        index = 1
-        while True:
+        ldap_connection.search(**search_parameters)
+        for entry in ldap_connection.entries:
 
-            ldap_connection.search(**search_parameters)
-            for entry in ldap_connection.entries:
+            index = index + 1
+            if index % LDAP_SEARCH_PAGE_SIZE == 0:
+                LOGGER.info("Processing record: %s", index)
 
-                index = index + 1
-                if index % LDAP_SEARCH_PAGE_SIZE == 0:
-                    LOGGER.info("Processing record: %s", index)
+            insert_to_db(entry, data_type=data_type)
 
-                insert_to_db(entry, data_type=data_type)
-
-                # 1.2.840.113556.1.4.319 is the OID/extended control for PagedResults
-                cookie = ldap_connection.result["controls"]["1.2.840.113556.1.4.319"][
-                    "value"
-                ]["cookie"]
-                if cookie:
-                    search_parameters["paged_cookie"] = cookie
-                else:
-                    LOGGER.info("Imported %s entries from Active Directory", index)
-                    break
+            # 1.2.840.113556.1.4.319 is the OID/extended control for PagedResults
+            cookie = ldap_connection.result["controls"]["1.2.840.113556.1.4.319"][
+                "value"
+            ]["cookie"]
+            if cookie:
+                search_parameters["paged_cookie"] = cookie
+            else:
+                LOGGER.info("Imported %s entries from Active Directory", index)
+                break
 
     sync_source = "ldap-" + data_type
     save_sync_time(LDAP_DC, sync_source, "initial")

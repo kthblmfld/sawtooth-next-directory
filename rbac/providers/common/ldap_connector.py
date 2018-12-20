@@ -58,7 +58,7 @@ def await_connection(server, user, password):
     connection = create_connection(server, user, password)
 
     while connection is None:
-        LOGGER.info(
+        LOGGER.debug(
             "Failed to connect to Active Directory. Retrying in %s seconds",
             LDAP_CONNECT_RETRY_SECS,
         )
