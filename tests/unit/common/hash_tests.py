@@ -35,3 +35,9 @@ def test_hash_id_12_byte_hex_value():
 def test_hash_id_invalid_value():
     with pytest.raises(TypeError):
         hash_util.to_12_byte_hex_hash(555)
+
+
+def test_hash_id_actual_value():
+    result = hash_util.to_12_byte_hex_hash(
+        "CN=r_d_180,OU=Roles,OU=Security,OU=Groups,DC=gsmtest,DC=corporate,DC=t-mobile,DC=com")
+    assert result == "bd8fa45fa9cc1f4b13582eeb"

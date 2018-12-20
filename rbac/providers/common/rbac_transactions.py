@@ -51,7 +51,10 @@ def add_transaction(inbound_entry):
         if inbound_entry["data_type"] == "user":
 
             user_id = data["relationship_id"]
+
+            LOGGER.info('rbac_transactions.add_transaction user_id: %s', user_id)
             object_id = hash_util.to_12_byte_hex_hash(user_id)
+
             address = rbac.user.address(object_id=object_id)
 
             inbound_entry["address"] = bytes_from_hex(address)
@@ -70,7 +73,10 @@ def add_transaction(inbound_entry):
         elif inbound_entry["data_type"] == "group":
 
             role_id = data["relationship_id"]
+
+            LOGGER.info('rbac_transactions.add_transaction role_id: %s', role_id)
             object_id = hash_util.to_12_byte_hex_hash(role_id)
+
             address = rbac.role.address(object_id=object_id)
 
             inbound_entry["address"] = bytes_from_hex(address)

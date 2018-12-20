@@ -65,46 +65,43 @@ def fetch_ldap_data(data_type):
     elif data_type == "group":
         search_filter = "(objectClass=group)"
 
-    LOGGER.info("getting ldap connection...")
-
     ldap_connection = ldap_connector.await_connection(LDAP_SERVER, LDAP_USER, LDAP_PASS)
 
-    LOGGER.debug("preparing search parameters...")
+    if ldap_connection is None:
+        LOGGER.error("Ldap connection creation failed. Skipping Ldap fetch")
+    else:
 
-    search_parameters = {
-        "search_base": LDAP_DC,
-        "search_filter": search_filter,
-        "attributes": ldap3.ALL_ATTRIBUTES,
-        "paged_size": LDAP_SEARCH_PAGE_SIZE,
-    }
+        search_parameters = {
+            "search_base": LDAP_DC,
+            "search_filter": search_filter,
+            "attributes": ldap3.ALL_ATTRIBUTES,
+            "paged_size": LDAP_SEARCH_PAGE_SIZE,
+        }
 
-    index = 1
-    while True:
+        index = 1
+        while True:
 
-        LOGGER.info("Searching ldap...")
-        ldap_connection.search(**search_parameters)
+            ldap_connection.search(**search_parameters)
+            for entry in ldap_connection.entries:
 
-        LOGGER.info("iterating results...")
-        for entry in ldap_connection.entries:
+                index = index + 1
+                if index % LDAP_SEARCH_PAGE_SIZE == 0:
+                    LOGGER.info("Processing record: %s", index)
 
-            index = index + 1
-            if index % LDAP_SEARCH_PAGE_SIZE == 0:
-                LOGGER.info("Processing record: %s", index)
+                insert_to_db(entry, data_type=data_type)
 
-            insert_to_db(entry, data_type=data_type)
+                # 1.2.840.113556.1.4.319 is the OID/extended control for PagedResults
+                cookie = ldap_connection.result["controls"]["1.2.840.113556.1.4.319"][
+                    "value"
+                ]["cookie"]
+                if cookie:
+                    search_parameters["paged_cookie"] = cookie
+                else:
+                    LOGGER.info("Imported %s entries from Active Directory", index)
+                    break
 
-            # 1.2.840.113556.1.4.319 is the OID/extended control for PagedResults
-            cookie = ldap_connection.result["controls"]["1.2.840.113556.1.4.319"][
-                "value"
-            ]["cookie"]
-            if cookie:
-                search_parameters["paged_cookie"] = cookie
-            else:
-                LOGGER.info("Imported %s entries from Active Directory", index)
-                break
-
-        sync_source = "ldap-" + data_type
-        save_sync_time(LDAP_DC, sync_source, "initial")
+    sync_source = "ldap-" + data_type
+    save_sync_time(LDAP_DC, sync_source, "initial")
 
 
 def insert_to_db(entry, data_type):
@@ -122,11 +119,7 @@ def insert_to_db(entry, data_type):
                 entry[attribute] = entry_attributes[attribute][0]
         except TypeError:
             # TODO: There are a lot of mapping attempts that end up in this block. Revisit'
-            LOGGER.warning(
-                "Could not assign: %s, to attribute: %s",
-                entry_attributes[attribute][0],
-                attribute,
-            )
+            LOGGER.warning("Could not assign: %s", entry_attributes[attribute][0])
 
     if data_type == "user":
         standardized_entry = inbound_user_filter(entry, "ldap")
@@ -157,6 +150,8 @@ def initialize_ldap_sync():
 
     if not LDAP_DC:
         LOGGER.info("Ldap Domain Controller is not provided, skipping Ldap sync.")
+    elif not ldap_connector.can_connect_to_ldap(LDAP_SERVER, LDAP_USER, LDAP_PASS):
+        LOGGER.info("Ldap Connection failed. Skipping Ldap sync.")
     else:
 
         connect_to_db()
