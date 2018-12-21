@@ -26,9 +26,9 @@ LOGGER = logging.getLogger(__name__)
 async def fetch_all_role_resources(conn, head_block_num, start, limit):
     resources = (
         await r.table("roles")
-        .order_by(index="role_id")
-        .slice(start, start + limit)
-        .map(
+            .order_by(index="role_id")
+            .slice(start, start + limit)
+            .map(
             lambda role: role.merge(
                 {
                     "id": role["role_id"],
@@ -53,9 +53,9 @@ async def fetch_all_role_resources(conn, head_block_num, start, limit):
                 }
             )
         )
-        .without("role_id")
-        .coerce_to("array")
-        .run(conn)
+            .without("role_id")
+            .coerce_to("array")
+            .run(conn)
     )
     return resources
 
@@ -63,8 +63,8 @@ async def fetch_all_role_resources(conn, head_block_num, start, limit):
 async def fetch_role_resource(conn, role_id, head_block_num):
     resource = (
         await r.table("roles")
-        .get_all(role_id, index="role_id")
-        .merge(
+            .get_all(role_id, index="role_id")
+            .merge(
             {
                 "id": r.row["role_id"],
                 "owners": fetch_relationships(
@@ -85,12 +85,26 @@ async def fetch_role_resource(conn, role_id, head_block_num):
                 ),
             }
         )
-        .without("role_id")
-        .coerce_to("array")
-        .run(conn)
+            .without("role_id")
+            .coerce_to("array")
+            .run(conn)
     )
     try:
         return resource[0]
+    except IndexError:
+        raise ApiNotFound("Not Found: No role with the id {} exists".format(role_id))
+
+
+async def fetch_latest_role_resource(conn, role_id):
+    role = (
+        await r.table("roles")
+            .filter({"role_id": role_id})
+            .coerce_to("array")
+            .run(conn)
+    )
+
+    try:
+        return role[0]
     except IndexError:
         raise ApiNotFound("Not Found: No role with the id {} exists".format(role_id))
 
@@ -99,13 +113,13 @@ async def fetch_recommended_resources(conn, identifier, head_block_num, start, l
     """Fetch recommended roles for a user"""
     resources = (
         await r.table("roles")
-        .outer_join(r.table("role_members"), lambda a, b: a["role_id"].eq(b["role_id"]))
-        .zip()
-        .filter(
+            .outer_join(r.table("role_members"), lambda a, b: a["role_id"].eq(b["role_id"]))
+            .zip()
+            .filter(
             lambda c: c.has_fields("identifiers").not_()
-            | c["identifiers"].contains(identifier).not_()
+                      | c["identifiers"].contains(identifier).not_()
         )
-        .map(
+            .map(
             lambda role: role.merge(
                 {
                     "id": role["role_id"],
@@ -130,9 +144,9 @@ async def fetch_recommended_resources(conn, identifier, head_block_num, start, l
                 }
             )
         )
-        .slice(start, start + limit)
-        .coerce_to("array")
-        .run(conn)
+            .slice(start, start + limit)
+            .coerce_to("array")
+            .run(conn)
     )
     return resources
 
@@ -141,15 +155,15 @@ async def fetch_recommended_resource(conn, identifier, head_block_num):
     """Fetch a recommended role for a user"""
     resource = (
         await r.table("roles")
-        .outer_join(r.table("role_members"), lambda a, b: a["role_id"].eq(b["role_id"]))
-        .zip()
-        .filter(
+            .outer_join(r.table("role_members"), lambda a, b: a["role_id"].eq(b["role_id"]))
+            .zip()
+            .filter(
             lambda c: c.has_fields("identifiers").not_()
-            | c["identifiers"].contains(identifier).not_()
+                      | c["identifiers"].contains(identifier).not_()
         )
-        .slice(0, 1)
-        .coerce_to("array")
-        .run(conn)
+            .slice(0, 1)
+            .coerce_to("array")
+            .run(conn)
     )
     try:
         return resource[0]

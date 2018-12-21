@@ -26,7 +26,7 @@ LOGGER = get_logger(__name__)
 
 LDAP_READ_TIMEOUT_SECS = 10
 LDAP_CONNECT_TIMEOUT_SECS = 6
-LDAP_CONNECT_RETRY_SECS = 10
+LDAP_CONNECT_RETRY_SECS = 5000
 
 
 def create_connection(server, user, password):
@@ -47,8 +47,7 @@ def create_connection(server, user, password):
                     server, connection.result
                 )
             )
-    except LDAPSocketOpenError as lsoe:
-        LOGGER.warning("Error opening LDAP socket to server %s. %s", server, lsoe)
+    except LDAPSocketOpenError:
         return None
 
     return connection
@@ -60,10 +59,6 @@ def await_connection(server, user, password):
     connection = create_connection(server, user, password)
 
     while connection is None:
-        LOGGER.info(
-            "Failed to connect to Active Directory. Retrying in %s seconds",
-            LDAP_CONNECT_RETRY_SECS,
-        )
         time.sleep(LDAP_CONNECT_RETRY_SECS)
         connection = create_connection(server, user, password)
 

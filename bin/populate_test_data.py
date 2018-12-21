@@ -17,10 +17,11 @@
 
 # http://docs.python-requests.org/en/master/
 
-import json
-import requests
-import logging
 import sys
+import json
+import logging
+import requests
+import time
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.level = logging.DEBUG
@@ -35,13 +36,16 @@ def insert_test_data():
       Builds out an example user, manager, role structure by making rest calls against the NEXT api.
     """
 
-    host = input("What is the hostname you would like to populate test "
-                 "data to? Press enter for localhost: ")
-    if host == "":
-       host = "localhost"
+    host = "localhost"
+
+    custom_host = input("What is the hostname you would like to populate test "
+                        "data to? Press enter for localhost: ")
+
+    if custom_host:
+        host = custom_host
 
     LOGGER.info("Inserting test data...")
-    
+
     response_create_current_manager = create_user('currentManager', host)
     LOGGER.info('Created current manager:%s', response_create_current_manager)
 
@@ -52,9 +56,10 @@ def insert_test_data():
 
     LOGGER.info('Created other manager:%s', response_create_other_manager)
 
-
     additional_managers = 5
-    LOGGER.info('Adding an additional {} managers...'.format(additional_managers))
+
+    LOGGER.info('Adding an additional %s managers...', additional_managers)
+
     for i in range(additional_managers):
         create_user('manager' + str(i), host)
 
@@ -63,43 +68,70 @@ def insert_test_data():
 
     LOGGER.info('Created staff:%s', response_create_staff)
 
-    auth_current_manager = response_create_current_manager['data']['authorization']
+    auth_current_manager = response_create_current_manager['token']
 
     LOGGER.info('Creating roles...')
 
-    LOGGER.info('Creating role: Sharepoint Admins')
+    role_name = "Mongers"
 
-    response_create_role_admins = create_role(auth=auth_current_manager,
-                                              name="Sharepoint Admins",
-                                              owners=[id_current_manager],
-                                              admins=[id_current_manager],
-                                              members=[id_staff],
-                                              host=host)
+    LOGGER.info('Creating role: %s', role_name)
 
-    LOGGER.info('Created role:%s', response_create_role_admins['data']['name'])
-    LOGGER.info('Creating role: Infosec Auditors')
+    response_create_role_sharepoint = create_role(auth=auth_current_manager,
+                                                  name=role_name,
+                                                  owners=[id_current_manager],
+                                                  admins=[id_current_manager],
+                                                  members=[id_staff],
+                                                  host=host,
+                                                  max_term_days=3)
 
-    response_create_role_auditors = create_role(auth=auth_current_manager,
-                                                name="Infosec Auditors",
-                                                owners=[id_current_manager],
-                                                admins=[id_current_manager],
-                                                members=[id_staff],
-                                                host=host)
+    role_id = response_create_role_sharepoint['data']['id']
 
-    LOGGER.info('Created role:%s', response_create_role_auditors['data']['name'])
+    LOGGER.info('Created role: %s with id: %s', response_create_role_sharepoint['data']['name'], role_id)
+    LOGGER.info('Full response: %s', str(response_create_role_sharepoint))
 
-    payload_propose_manager = {"id": id_other_manager}
+    sleep_time = 5
+    LOGGER.info('Waiting %s seconds for propagation....', sleep_time)
+    time.sleep(sleep_time)
 
-    response_propose_manager = json.loads(requests.put('http://' + host + ':8000/api/users/' + id_staff + '/manager/',
-                                                       data=json.dumps(payload_propose_manager),
-                                                       headers={"Content-Type": "application/json",
-                                                                "Authorization": auth_current_manager}).text)
+    LOGGER.info('Looking up role with id: %s', role_id)
+    get_role_response = get_role(auth=auth_current_manager, host=host, role_id=role_id)
 
-    LOGGER.info('Created proposal id: {} - Switch {}\'s manager from {} to {}'.format(
-        response_propose_manager['proposal_id'],
-        'staff',
-        'currentManager',
-        'otherManager'))
+    # TODO: Not currently end-to-end (requires head block)
+    # LOGGER.info('Getting all roles')
+    # get_roles_response = get_roles(auth=auth_current_manager, host=host)
+
+    LOGGER.info('Role lookup response: %s', str(get_role_response))
+
+    # TODO: Uncomment and investigate the proposals defect these last steps cause
+    # LOGGER.info('Creating role: Infosec Auditors')
+    # response_create_role_infosec = create_role(auth=auth_current_manager,
+    #                                            name="Infosec Auditors",
+    #                                            owners=[id_current_manager],
+    #                                            admins=[id_current_manager],
+    #                                            members=[id_staff],
+    #                                            host=host)
+    #
+    # LOGGER.info('Created role:%s', response_create_role_infosec['data']['name'])
+    #
+    # payload_id_of_new_manager_proposed = {"id": id_other_manager}
+    #
+    # uri_propose_new_manager = 'http://' + host + ':8000/api/users/' + id_staff + '/manager/'
+    #
+    # LOGGER.info('uri: ' + uri_propose_new_manager + '\npayload_id_of_new_manager_proposed: ' + str(
+    #     payload_id_of_new_manager_proposed) + '\nmanager authorization: ' + str(auth_current_manager))
+    #
+    # response_propose_manager = json.loads(
+    #     requests.put(uri_propose_new_manager, data=json.dumps(payload_id_of_new_manager_proposed),
+    #                  headers={"Content-Type": "application/json",
+    #                           "Authorization": auth_current_manager}).text)
+    #
+    # LOGGER.info('---- Propose manager response -----: %s', response_propose_manager)
+    #
+    # LOGGER.info('Created proposal id: %s - Switch %s\'s manager from %s to %s',
+    #             response_propose_manager['proposal_id'],
+    #             'staff',
+    #             'currentManager',
+    #             'otherManager')
 
 
 def create_user(identifier, host, manager=''):
@@ -114,8 +146,32 @@ def create_user(identifier, host, manager=''):
     return json.loads(response_create_user.text)
 
 
-def create_role(auth, name, owners, admins, members, host):
-    """Creates a role in the system.
+def get_role(auth, host, role_id):
+    """Gets a role from the roles endpoint"""
+
+    response = requests.get('http://' + host + ':8000/api/roles/' + role_id, headers={"Accept": "application/json",
+                                                                                      "Authorization": auth})
+
+    if response.status_code != 200:
+        raise RuntimeError('Failed to get role. Response: ' + response.text)
+
+    json.loads(response.text)
+
+
+def get_roles(auth, host):
+    """Gets all roles from the roles endpoint"""
+
+    response = requests.get('http://' + host + ':8000/api/roles', headers={"Accept": "application/json",
+                                                                           "Authorization": auth})
+
+    if response.status_code != 200:
+        raise RuntimeError('Failed to get roles. Response: ' + response.text)
+
+    json.loads(response.text)
+
+
+def create_role(auth, name, owners, admins, members, host, max_term_days=0):
+    """Creates a role using the roles endpoint
 
        Args:
            auth: The bearer token to be used in the Authorization header
@@ -123,18 +179,13 @@ def create_role(auth, name, owners, admins, members, host):
            owners: Owners of the role (add/remove members)
            admins: Administrators of the role (modify the role itself)
            members: Members of the role (inherit the privileges assigned to the role)
-
+           host: The target host
 
        Returns the response payload of the role creation rest call as a json object.
     """
 
-    payload_create_role = {
-        "name": name,
-        "owners": owners,
-        "administrators": admins,
-        "members": members,
-        "metadata": ""
-    }
+    payload_create_role = {"name": name, "owners": owners, "administrators": admins, "members": members,
+                           "metadata": "max_term_days=" + str(max_term_days)}
 
     response_create_role_envelope = requests.post('http://' + host + ':8000/api/roles/', json=payload_create_role,
                                                   headers={"Content-Type": "application/json",

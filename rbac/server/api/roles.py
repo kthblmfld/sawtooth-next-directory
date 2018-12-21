@@ -23,8 +23,12 @@ from rbac.common import rbac
 from rbac.server.api.errors import ApiNotImplemented
 from rbac.server.api.auth import authorized
 from rbac.server.api import utils
+from rbac.common.logs import get_logger
+from rbac.transaction_creation import role_transaction_creation
 
 from rbac.server.db import roles_query
+
+LOGGER = get_logger(__name__)
 
 ROLES_BP = Blueprint("roles")
 
@@ -55,30 +59,42 @@ async def create_new_role(request):
 
     txn_key = await utils.get_transactor_key(request)
     role_id = str(uuid4())
-    batch_list = rbac.role.batch_list(
-        signer_keypair=txn_key,
-        name=request.json.get("name"),
-        role_id=role_id,
-        metadata=request.json.get("metadata"),
-        admins=request.json.get("administrators"),
-        owners=request.json.get("owners"),
+    batch_list = role_transaction_creation.create_role(
+        txn_key,
+        request.app.config.BATCHER_KEY_PAIR,
+        request.json.get("name"),
+        role_id,
+        request.json.get("metadata"),
+        request.json.get("administrators"),
+        request.json.get("owners"),
     )
     await utils.send(
-        request.app.config.VAL_CONN, batch_list, request.app.config.TIMEOUT
+        request.app.config.VAL_CONN, batch_list[0], request.app.config.TIMEOUT
     )
     return create_role_response(request, role_id)
 
 
+# @ROLES_BP.get("api/roles/<role_id>")
+# @authorized()
+# async def get_role(request, role_id):
+#     head_block = await utils.get_request_block(request)
+#     role_resource = await roles_query.fetch_role_resource(
+#         request.app.config.DB_CONN, role_id, head_block.get("num")
+#     )
+#     return await utils.create_response(
+#         request.app.config.DB_CONN, request.url, role_resource, head_block
+#     )
+
 @ROLES_BP.get("api/roles/<role_id>")
 @authorized()
 async def get_role(request, role_id):
-    head_block = await utils.get_request_block(request)
-    role_resource = await roles_query.fetch_role_resource(
-        request.app.config.DB_CONN, role_id, head_block.get("num")
+    role_resource = await roles_query.fetch_latest_role_resource(
+        request.app.config.DB_CONN, role_id
     )
-    return await utils.create_response(
-        request.app.config.DB_CONN, request.url, role_resource, head_block
-    )
+
+    LOGGER.info("role_resource: %s", role_resource)
+
+    return {"data": json(role_resource)}
 
 
 @ROLES_BP.patch("api/roles/<role_id>")
