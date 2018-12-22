@@ -1,3 +1,4 @@
+
 /* Copyright 2018 Contributors to Hyperledger Sawtooth
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,38 +21,47 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { shallow } from 'enzyme';
 
-
 import * as customStore from '../../../customStore';
-import CreatePack from './CreatePack';
+import PeopleApproval from './PeopleApproval';
 
 
 const store = customStore.create();
-describe('CreateRole component', () => {
-  const props = {
-    submit: (username, password) => { },
-    CreateRole: () => { },
-    userId: '',
-    createPack: {
-      name: 'name',
-      owners: 'id1',
-    },
-    createPack: () =>{},
-  };
-  const wrapper = shallow(<CreatePack {...props} />);
+const props = {
+  getOpenProposals: () => { },
+  userFromId: () => { },
+  openProposals: [''],
+};
+
+const newprops = {
+  getOpenProposals: () => { },
+  userFromId: () => { },
+  openProposals: [],
+};
+const wrapper = shallow(<PeopleApproval {...props} store={store} />);
 
 
-  it('renders without crashing', () => {
-    const div = document.createElement('div');
+it('renders without crashing', () => {
+  const div = document.createElement('div');
 
-    ReactDOM.render(
-      <Provider store={store}>
-        <BrowserRouter><CreatePack/></BrowserRouter>
-      </Provider>, div
-    );
+  ReactDOM.render(
+    <Provider store={store}>
+      <BrowserRouter><PeopleApproval {...props} /></BrowserRouter>
+    </Provider>, div
+  );
 
-    ReactDOM.unmountComponentAtNode(div);
-  });
-  wrapper.find('#next-approver-manage-content-pack-form').simulate('change',
-    { event: {} }, { name: 'name', value: '' });
-  wrapper.instance().createPack(props);
+  ReactDOM.render(
+    <Provider store={store}>
+      <BrowserRouter><PeopleApproval {...newprops} /></BrowserRouter>
+    </Provider>, div
+  );
+
+  ReactDOM.unmountComponentAtNode(div);
+});
+
+it('calls reset function', () => {
+  wrapper.dive().instance().reset();
+});
+
+it('calls setFlow function', () => {
+  wrapper.dive().instance().setFlow();
 });

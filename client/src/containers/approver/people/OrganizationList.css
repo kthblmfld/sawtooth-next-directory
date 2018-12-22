@@ -17,3 +17,7 @@ limitations under the License.
 #next-approver-people-list-container {
   padding: 0 30px;
 }
+
+#next-approver-people-list-container .ui.segment {
+  cursor: pointer;
+}
