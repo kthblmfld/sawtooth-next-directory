@@ -17,11 +17,9 @@ limitations under the License.
 import { call, put } from 'redux-saga/effects';
 
 
-import FixtureAPI from '../services/FixtureApi';
-
-
-import AuthActions from '../redux/AuthRedux';
-import { login, signup, logout } from '../sagas/AuthSaga';
+import FixtureAPI from 'services/FixtureApi';
+import AuthActions from 'redux/AuthRedux';
+import { login, signup, logout } from 'sagas/AuthSaga';
 
 
 const stepper = (fn) => (mock) => fn.next(mock).value;
@@ -43,7 +41,7 @@ test.skip('first calls API', () => {
 });
 
 
-test.skip('success path', () => {
+test('success path', () => {
   const username = 'hello';
   const password = 'world';
 
@@ -60,7 +58,7 @@ test.skip('success path', () => {
 });
 
 
-test.skip('failure path', () => {
+test('failure path', () => {
   const res = { ok: false, data: {} };
 
   const username = 'hello';
@@ -77,27 +75,27 @@ test.skip('failure path', () => {
   expect(stepRes).toEqual(put(AuthActions.loginFailure(res.data.error)));
 });
 
-test.skip('signup API', () => {
-  const username = 'hello';
-  const password = 'world';
-  const email = 'email@default.com';
-  const name = 'name';
+test('signup API', async () => {
+  const payload = {
+    username: 'hello',
+    password: 'world',
+    email: 'email@default.com',
+    name: 'name',
+  };
 
-  const step = stepper(signup(FixtureAPI, {
-    username: username,
-    password: password,
-    name: name,
-    email: email,
-  }));
-  expect(step()).toEqual(call(FixtureAPI.signup, {
-    username: username,
-    password: password,
-    name: name,
-    email: email,
-  }));
+  const { username, password, email, name } = payload;
+
+  const response = FixtureAPI.signup(username, password, email, name);
+
+  const step = stepper(signup(FixtureAPI, payload));
+
+  step();
+  step();
+  const stepRes = step(response);
+  expect(stepRes).toEqual(put(AuthActions.signupSuccess(true)));
 });
 
-test.skip('signup success path', () => {
+test('signup success path', () => {
   const username = 'hello';
   const password = 'world';
   const email = 'email@default.com';
@@ -112,12 +110,13 @@ test.skip('signup success path', () => {
   }));
 
   step();
+  step();
 
   const stepRes = step(res);
   expect(stepRes).toEqual(put(AuthActions.signupSuccess(true)));
 });
 
-test.skip('signup failure path', () => {
+test('signup failure path', () => {
   const res = { ok: false, data: {} };
 
   const username = 'hello';
@@ -133,6 +132,7 @@ test.skip('signup failure path', () => {
 
   }));
 
+  step();
   step();
 
   const stepRes = step(res);

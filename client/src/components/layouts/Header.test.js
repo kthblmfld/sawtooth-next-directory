@@ -21,7 +21,7 @@ import { shallow } from 'enzyme';
 import { BrowserRouter } from 'react-router-dom';
 
 
-import * as customStore from '../../customStore';
+import * as customStore from 'customStore';
 import Header from './Header';
 
 
@@ -33,10 +33,12 @@ describe('Header component', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     const props = {
+      id: '1234',
       me: { name: 'username' },
       openProposalsCount: 5,
       renderMenu: () => {  },
       logout: () => { },
+      users: [],
     };
     ReactDOM.render(
       <Provider store={store}>
@@ -55,7 +57,9 @@ describe('Header component', () => {
       logout: () => { },
     };
 
-    const wrapper = shallow(<Header {...props} store={store}/>);
+    const wrapper = shallow(
+      <Header.WrappedComponent {...props} store={store}/>
+    );
 
     wrapper.instance().logout();
   });

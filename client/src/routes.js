@@ -12,13 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ----------------------------------------------------------------------------- */
-/*
-
-
-Routes
-Routes are destructured from the declarative syntax due to for
-increased flexibility. State is sent top-down via propsto the main
-and nav components. */
 
 
 import React from 'react';
@@ -27,8 +20,8 @@ import React from 'react';
 import ApproverNav from './components/nav/ApproverNav';
 import RequesterHome from './containers/requester/RequesterHome';
 import RequesterNav from './components/nav/RequesterNav';
-import Role from './containers/requester/Role';
-import Pack from './containers/requester/Pack';
+import Role from './containers/requester/role/Role';
+import Pack from './containers/requester/pack/Pack';
 
 
 import Approved from './containers/approver/Approved';

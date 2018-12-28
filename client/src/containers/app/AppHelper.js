@@ -14,13 +14,13 @@ limitations under the License.
 ----------------------------------------------------------------------------- */
 
 
-import AppActions, { AppSelectors } from '../../redux/AppRedux';
-import ApproverActions, { ApproverSelectors } from '../../redux/ApproverRedux';
-import AuthActions, { AuthSelectors } from '../../redux/AuthRedux';
-import ChatActions, { ChatSelectors } from '../../redux/ChatRedux';
-import UserActions, { UserSelectors } from '../../redux/UserRedux';
+import AppActions, { AppSelectors } from 'redux/AppRedux';
+import ApproverActions, { ApproverSelectors } from 'redux/ApproverRedux';
+import AuthActions, { AuthSelectors } from 'redux/AuthRedux';
+import ChatActions, { ChatSelectors } from 'redux/ChatRedux';
+import UserActions, { UserSelectors } from 'redux/UserRedux';
 import RequesterActions, {
-  RequesterSelectors } from '../../redux/RequesterRedux';
+  RequesterSelectors } from 'redux/RequesterRedux';
 
 
 //
@@ -36,6 +36,8 @@ export const appState = (state) => {
     isAnimating:         AppSelectors.isAnimating(state),
     isRefreshing:        AppSelectors.isRefreshing(state),
     isSocketOpen:        AppSelectors.isSocketOpen(state),
+    socketMaxAttemptsReached:
+      AppSelectors.socketMaxAttemptsReached(state),
     shouldRefreshOnNextSocketReceive:
       AppSelectors.shouldRefreshOnNextSocketReceive(state),
 

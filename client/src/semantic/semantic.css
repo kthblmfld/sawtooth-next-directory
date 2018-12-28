@@ -770,6 +770,70 @@ body,
   background: #273544;
 }
 
+.contrast {
+  background: #fbfcfd;
+}
+
+.avatar-palette-1 {
+  background: #ffb5e8;
+  color: #ff69d0;
+}
+
+.avatar-palette-2 {
+  background: #ff9cee;
+  color: #ff50e1;
+}
+
+.avatar-palette-3 {
+  background: #b28dff;
+  color: #7e41ff;
+}
+
+.avatar-palette-4 {
+  background: #d5aaff;
+  color: #af5dff;
+}
+
+.avatar-palette-5 {
+  background: #ebe4ff;
+  color: #b298ff;
+}
+
+.avatar-palette-6 {
+  background: #aff8db;
+  color: #5efcbd;
+}
+
+.avatar-palette-7 {
+  background: #85e3ff;
+  color: #38d1ff;
+}
+
+.avatar-palette-8 {
+  background: #6eb5ff;
+  color: #218eff;
+}
+
+.avatar-palette-9 {
+  background: #bffccb;
+  color: #70ff8c;
+}
+
+.avatar-palette-10 {
+  background: #ffabab;
+  color: #ff5e5e;
+}
+
+.avatar-palette-11 {
+  background: #ffcbc1;
+  color: #ff8b74;
+}
+
+.avatar-palette-12 {
+  background: #fff58a;
+  color: #ffee3d;
+}
+
 /*******************************
          Site Overrides
 *******************************/
@@ -16197,7 +16261,7 @@ a.ui.basic.label:hover {
   line-height: 0.7em;
   min-height: 1em;
   min-width: 1em;
-  padding: 0.4em 0.45em !important;
+  padding: 0.4em 0.5em !important;
   top: 0.9em;
 }
 
@@ -26204,6 +26268,15 @@ Floated Menu / Item
 
 .ui.huge.inverted.vertical.menu .ui.header .content {
   color: #FFFFFF;
+}
+
+.ui.huge.inverted.vertical.menu .ui.header .content p {
+  color: lightslategray;
+  font-size: 0.85em;
+  margin-top: 7px;
+}
+
+.ui.huge.inverted.vertical.menu .item:first-child .ui.header .content {
   max-width: 12em;
 }
 
@@ -29488,8 +29561,24 @@ a.ui.card:hover,
 *******************************/
 
 .ui.stackable.grid .column .ui.card {
-  height: 200px;
-  padding: 1em;
+  height: 250px;
+}
+
+.ui.stackable.grid .column .ui.card.minimal {
+  background: white;
+  border: 1px solid #eee;
+  -webkit-box-shadow: 0 3px 13px #98989814;
+  box-shadow: 0 3px 13px #98989814;
+}
+
+.ui.stackable.grid .column .ui.card.huge .content:first-child {
+  padding: 15%;
+}
+
+.ui.stackable.grid .column .ui.card.huge .content .header {
+  color: #E40073;
+  font-size: 1.7em;
+  font-weight: 400;
 }
 
 .ui.stackable.grid .column .ui.card .content {
@@ -29503,6 +29592,11 @@ a.ui.card:hover,
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
+}
+
+.ui.cards > .card > .extra,
+.ui.card > .extra {
+  border-top: 1px solid #0000000f !important;
 }
 
 /*******************************

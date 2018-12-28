@@ -12,12 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ----------------------------------------------------------------------------- */
-/*
-
-
-RequesterNav
-Component encapsulating the template for
-the sidebar displayed on the requester landing page */
 
 
 import React, { Component } from 'react';
@@ -134,7 +128,6 @@ class RequesterNav extends Component {
    * @returns {JSX}
    */
   render () {
-    const { startAnimation } = this.props;
     return (
       <Container>
         <Link to='/browse' id='next-requester-nav-browse'>
@@ -149,17 +142,6 @@ class RequesterNav extends Component {
           category
           loading={false}/>
         { this.renderLists() }
-        <div id='next-requester-switch-container'>
-          <Button
-            icon
-            as={Link}
-            labelPosition='right'
-            onClick={startAnimation}
-            to='/approval/pending/individual'>
-            Switch to Approver
-            <Icon name='right arrow'/>
-          </Button>
-        </div>
       </Container>
     );
   }

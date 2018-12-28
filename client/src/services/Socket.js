@@ -17,12 +17,28 @@ limitations under the License.
 export let socket;
 
 
+export const SOCKET_RECONNECT_TIMEOUT = 1e3;
+export const SOCKET_NORMAL_CLOSURE_ERROR_CODE = 1e3;
+export const SOCKET_NO_STATUS_RECEIVED_ERROR_CODE = 1005;
+
+
+const MAX_ATTEMPTS = 5;
+let attempt = 0;
+
+
 const create = () =>
   socket = new WebSocket(
     (process.env.REACT_APP_WS_PROTOCOL || 'ws://') +
     (process.env.REACT_APP_SERVER_HOST || 'localhost') + ':' +
     (process.env.REACT_APP_SERVER_PORT || '8000') + '/api/chatbot'
   );
+
+
+export const incrementSocketAttempt = () => {
+  return attempt >= MAX_ATTEMPTS ?
+    attempt = -1 :
+    ++attempt;
+};
 
 
 export default {

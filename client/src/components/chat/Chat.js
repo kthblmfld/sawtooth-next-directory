@@ -29,8 +29,9 @@ import {
 
 
 import './Chat.css';
-import ChatForm from '../forms/ChatForm';
 import ChatMessage from './ChatMessage';
+import ChatForm from 'components/forms/ChatForm';
+import Avatar from 'components/layouts/Avatar';
 
 
 // TODO: Break out into child components
@@ -127,17 +128,23 @@ class Chat extends Component {
   }
 
 
-  // * Needed for debugging
-  manualRequestRole = () => {
+  /**
+   * Send manual access request for current role
+   * @param {string} message Message body
+   */
+  manualRequestRole = (message) => {
     const { activeRole, me, requestRoleAccess } = this.props;
-    requestRoleAccess(activeRole.id, me.id, 'some reason');
+    requestRoleAccess(activeRole.id, me.id, message);
   }
 
 
-  // * Needed for debugging
-  manualRequestPack = () => {
+  /**
+   * Send manual access request for current pack
+   * @param {string} message Message body
+   */
+  manualRequestPack = (message) => {
     const { activePack, me, requestPackAccess } = this.props;
-    requestPackAccess(activePack.id, me.id, 'some reason');
+    requestPackAccess(activePack.id, me.id, message);
   }
 
 
@@ -152,6 +159,15 @@ class Chat extends Component {
     const { rejectProposals, selectedProposals, reset } = this.props;
     rejectProposals(selectedProposals);
     reset();
+  }
+
+
+  // * Needed for debugging
+  manualErrorTest = () => {
+    const { sendMessage } = this.props;
+    sendMessage({
+      fail: 'yes', do: 'CREATE', message: { text: '/recommend' }, user_id: '?',
+    });
   }
 
 
@@ -184,11 +200,11 @@ class Chat extends Component {
 
         { type === 'APPROVER' && selectedProposal && title && subtitle &&
           <div id='next-chat-selection-heading-container'>
-            <Image
-              size='tiny'
+            <Avatar
+              userId={selectedProposal.opener}
+              size='medium'
               className='pull-left'
-              src='http://i.pravatar.cc/150'
-              avatar/>
+              {...this.props}/>
             <Header as='h3' inverted>
               {title}
               <Header.Subheader>{subtitle}</Header.Subheader>
@@ -226,12 +242,12 @@ class Chat extends Component {
               animation='fade right'
               duration={{hide: 0, show: 1000}}>
               { selectedUsers.map(user =>
-                <Image
+                <Avatar
                   key={user}
-                  size='tiny'
+                  userId={user}
+                  size='medium'
                   className='pull-left'
-                  src='http://i.pravatar.cc/150'
-                  avatar/>
+                  {...this.props}/>
               ) }
             </Transition.Group>
             <Transition
@@ -307,6 +323,8 @@ class Chat extends Component {
               disabled={disabled}
               approve={this.manualApprove}
               reject={this.manualReject}
+              requestRole={(message) => this.manualRequestRole(message)}
+              requestPack={(message) => this.manualRequestPack(message)}
               send={(message) => this.send(message)}/>
           </div>
         }
@@ -319,7 +337,8 @@ class Chat extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    fetching: state.chat.fetching,
+    fetching:      state.chat.fetching,
+    socketError:   state.app.socketError,
   };
 };
 

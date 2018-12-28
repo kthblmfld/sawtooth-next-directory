@@ -17,6 +17,7 @@ limitations under the License.
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+
 import StackedAvatar from './StackedAvatar';
 
 
@@ -24,16 +25,17 @@ describe('StackedAvatar component', () => {
 
   it('Renders more than 3 components', () => {
     const div = document.createElement('div');
+    const list = ['one', 'two', 'three', 'four', 'five'];
 
     const props = {
-      list: ['one', 'two', 'three', 'four', 'five'],
+      users: [],
     };
 
     ReactDOM.render(
-      <StackedAvatar {...props} />, div
+      <StackedAvatar list={list} {...props}/>, div
     );
     ReactDOM.render(
-      <StackedAvatar list={[]} />, div
+      <StackedAvatar list={[]} {...props}/>, div
     );
 
     ReactDOM.unmountComponentAtNode(div);
