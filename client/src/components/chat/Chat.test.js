@@ -41,7 +41,9 @@ describe('Chat component', () => {
     };
 
     ReactDOM.render(
-      <BrowserRouter><Chat store={store} {...props} /></BrowserRouter>, div
+      <BrowserRouter>
+        <Chat store={store} {...props}/>
+      </BrowserRouter>, div
     );
 
     ReactDOM.unmountComponentAtNode(div);
@@ -71,20 +73,28 @@ describe('Chat component', () => {
     };
 
     ReactDOM.render(
-      <BrowserRouter><Chat store={store} {...props} /></BrowserRouter>, div
+      <BrowserRouter>
+        <Chat store={store} {...props}/>
+      </BrowserRouter>, div
     );
 
     ReactDOM.render(
-      <BrowserRouter><Chat store={store}
-        title='defaultTitle' type={'0'} /></BrowserRouter>, div
+      <BrowserRouter>
+        <Chat store={store}
+          title='defaultTitle' type={'0'}/>
+      </BrowserRouter>, div
     );
 
     ReactDOM.render(
-      <BrowserRouter><Chat {...newProps} store={store} /></BrowserRouter>, div
+      <BrowserRouter>
+        <Chat {...newProps} store={store}/>
+      </BrowserRouter>, div
     );
 
     ReactDOM.render(
-      <BrowserRouter><Chat type={'0'} store={store} /></BrowserRouter>, div
+      <BrowserRouter>
+        <Chat type={'0'} store={store}/>
+      </BrowserRouter>, div
     );
 
     ReactDOM.unmountComponentAtNode(div);
@@ -105,10 +115,10 @@ describe('Chat component', () => {
       userFromId: (userId) => {
         return { name: '' };
       },
-      requestRoleAccess: () =>{},
+      requestRoleAccess: () => {},
       requestPackAccess: () => {},
       approveProposals: () => { },
-      selectedProposals: () =>{},
+      selectedProposals: () => {},
       reset: () => { },
       rejectProposals: () => {},
       selectedUsers: [{ user: 'roleid' }],
@@ -121,13 +131,13 @@ describe('Chat component', () => {
       activeRole: { id: 'abc' },
       me: { id: 'asdf' },
       approveProposals: () => { },
-      selectedProposals: () =>{},
+      selectedProposals: () => {},
       reset: () => { },
       rejectProposals: () => {},
     };
 
-    const wrapper = shallow(<Chat {...props}  store={store} />);
-    const newWrapper = shallow(<Chat {...newProps} store={store} />);
+    const wrapper = shallow(<Chat {...props}  store={store}/>);
+    const newWrapper = shallow(<Chat {...newProps} store={store}/>);
 
     wrapper.dive().instance().send(props, { type: 0 });
     wrapper.dive().instance().send(props, { type: 1 });

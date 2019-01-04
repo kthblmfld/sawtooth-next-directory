@@ -54,9 +54,9 @@ class RejectUpdateUserManager(ProposalReject):
         """The relationship type this message acts upon"""
         return addresser.RelationshipType.MANAGER
 
-    def make_addresses(self, message, signer_keypair):
+    def make_addresses(self, message, signer_user_id):
         """Makes the appropriate inputs & output addresses for the message"""
-        inputs, outputs = super().make_addresses(message, signer_keypair)
+        inputs, outputs = super().make_addresses(message, signer_user_id)
 
         proposal_address = addresser.proposal.address(
             object_id=message.object_id, related_id=message.related_id
@@ -66,23 +66,22 @@ class RejectUpdateUserManager(ProposalReject):
 
         return inputs, outputs
 
-    def validate_state(self, context, message, inputs, input_state, store, signer):
+    def validate_state(self, context, message, payload, input_state, store):
         """Validates that:
         1. The proposed new manager is the signer of the transaction"""
         super().validate_state(
             context=context,
             message=message,
-            inputs=inputs,
+            payload=payload,
             input_state=input_state,
             store=store,
-            signer=signer,
         )
         # TODO: change to verify proposal assignment and hierarchy
 
 
-#        if message.related_id != signer:
+#        if message.related_id != payload.signer.user_id:
 #            raise ValueError(
 #                "Proposed manager {} is not the transaction signer {}".format(
-#                    message.related_id, signer
+#                    message.related_id, payload.signer.user_id
 #                )
 #            )

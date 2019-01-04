@@ -14,12 +14,9 @@ limitations under the License.
 ----------------------------------------------------------------------------- */
 
 
-import { all, call, fork, put } from 'redux-saga/effects';
+import { all, call, fork, put, spawn } from 'redux-saga/effects';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
-
-
-import RequesterActions from 'redux/RequesterRedux';
-import UserActions from 'redux/UserRedux';
+import { RequesterActions, UserActions } from 'state';
 
 
 /**
@@ -68,7 +65,8 @@ export function * getRole (api, action) {
 export function * getRoles (api, action) {
   try {
     const { ids } = action;
-    if (ids.length > 0) yield all(ids.map(id => fork(fetchRole, api, id)));
+    if (ids.length > 0)
+      yield all(ids.map(id => spawn(fetchRole, api, id)));
   } catch (err) {
     console.error(err);
   }
@@ -100,7 +98,8 @@ export function * getPack (api, action) {
 export function * getPacks (api, action) {
   try {
     const { ids } = action;
-    if (ids.length > 0) yield all(ids.map(id => fork(fetchPack, api, id)));
+    if (ids.length > 0)
+      yield all(ids.map(id => spawn(fetchPack, api, id)));
   } catch (err) {
     console.error(err);
   }
@@ -113,19 +112,46 @@ export function * getPacks (api, action) {
  * @param {object} action Redux action
  * @generator
  */
-export function * getAllRoles (api) {
+export function * getAllRoles (api, action) {
   try {
-    yield put(showLoading());
-    const res = yield call(api.getRoles);
-    if (res.ok)
-      yield put(RequesterActions.allRolesSuccess(res.data.data));
-    else
+    const { start, limit } = action;
+    const res = yield call(api.getRoles, start, limit);
+    if (res.ok) {
+      yield put(RequesterActions.allRolesSuccess(
+        res.data.data,
+        res.data.paging.total),
+      );
+    } else {
       yield put(RequesterActions.allRolesFailure(res.data.error));
+    }
 
   } catch (err) {
     console.error(err);
-  } finally {
-    yield put(hideLoading());
+  }
+}
+
+
+/**
+ * Get all packs
+ * @param {object} api    API service
+ * @param {object} action Redux action
+ * @generator
+ */
+export function * getAllPacks (api, action) {
+  try {
+    const { start, limit } = action;
+    const res = yield call(api.getPacks, start, limit);
+    if (res.ok) {
+      yield put(RequesterActions.allPacksSuccess(
+        res.data.data,
+        res.data.paging.total),
+      );
+    } else {
+      yield put(RequesterActions.allPacksFailure(res.data.error));
+    }
+
+  } catch (err) {
+    console.error(err);
   }
 }
 
@@ -173,7 +199,7 @@ export function * roleAccess (api, action) {
     const { id, userId, reason } = action;
     const res = yield call(api.requestRoleAccess, id, {
       id: userId,
-      reason: reason,
+      reason,
     });
     if (res.ok) {
       yield put(RequesterActions.roleAccessSuccess(res.data));
@@ -198,7 +224,7 @@ export function * packAccess (api, action) {
     const { id, userId, reason } = action;
     const res = yield call(api.requestPackAccess, id, {
       id: userId,
-      reason: reason,
+      reason,
     });
     if (res.ok) {
       yield put(RequesterActions.packAccessSuccess(res.data));
@@ -221,11 +247,9 @@ export function * packAccess (api, action) {
 export function * fetchRole (api, id) {
   try {
     const res = yield call(api.getRole, id);
-    if (res.ok)
-      yield put(RequesterActions.roleSuccess(res.data.data));
-    else
+    res.ok ?
+      yield put(RequesterActions.roleSuccess(res.data.data)) :
       yield put(RequesterActions.roleFailure(res.data.error));
-
   } catch (err) {
     console.error(err);
   }

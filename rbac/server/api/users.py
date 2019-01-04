@@ -66,6 +66,7 @@ async def create_new_user(request):
 
     # Generate keys
     txn_key = Key()
+    txn_user_id = rbac.user.unique_id()
     encrypted_private_key = encrypt_private_key(
         request.app.config.AES_KEY, txn_key.public_key, txn_key.private_key_bytes
     )
@@ -73,7 +74,8 @@ async def create_new_user(request):
     # Build create user transaction
     batch_list = rbac.user.batch_list(
         signer_keypair=txn_key,
-        user_id=txn_key.public_key,
+        signer_user_id=txn_user_id,
+        user_id=txn_user_id,
         name=request.json.get("name"),
         username=request.json.get("username"),
         email=request.json.get("email"),
@@ -93,7 +95,7 @@ async def create_new_user(request):
     ).hexdigest()
 
     auth_entry = {
-        "user_id": txn_key.public_key,
+        "user_id": txn_user_id,
         "hashed_password": hashed_password,
         "encrypted_private_key": encrypted_private_key,
         "username": request.json.get("username"),
@@ -102,7 +104,7 @@ async def create_new_user(request):
     await auth_query.create_auth_entry(request.app.config.DB_CONN, auth_entry)
 
     # Send back success response
-    return create_user_response(request, txn_key.public_key)
+    return create_user_response(request, txn_user_id)
 
 
 @USERS_BP.get("api/users/<user_id>")
@@ -141,10 +143,11 @@ async def update_manager(request, user_id):
     required_fields = ["id"]
     utils.validate_fields(required_fields, request.json)
 
-    txn_key = await utils.get_transactor_key(request)
+    txn_key, txn_user_id = await utils.get_transactor_key(request)
     proposal_id = str(uuid4())
     batch_list = rbac.user.manager.propose.batch_list(
         signer_keypair=txn_key,
+        signer_user_id=txn_user_id,
         proposal_id=proposal_id,
         user_id=user_id,
         new_manager_id=request.json.get("id"),
@@ -241,10 +244,10 @@ async def fetch_recommended_roles(request, user_id):
     )
 
 
-def create_user_response(request, public_key):
-    token = generate_api_key(request.app.config.SECRET_KEY, public_key)
+def create_user_response(request, user_id):
+    token = generate_api_key(request.app.config.SECRET_KEY, user_id)
     user_resource = {
-        "id": public_key,
+        "id": user_id,
         "name": request.json.get("name"),
         "username": request.json.get("username"),
         "email": request.json.get("email"),

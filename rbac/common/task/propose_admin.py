@@ -49,9 +49,9 @@ class ProposeAddTaskAdmin(ProposalPropose):
         """The relationship type this message acts upon"""
         return addresser.RelationshipType.ADMIN
 
-    def make_addresses(self, message, signer_keypair=None):
+    def make_addresses(self, message, signer_user_id=None):
         """Makes the appropriate inputs & output addresses for the message"""
-        inputs, outputs = super().make_addresses(message, signer_keypair)
+        inputs, outputs = super().make_addresses(message, signer_user_id)
 
         user_address = addresser.user.address(message.user_id)
         inputs.add(user_address)
@@ -72,19 +72,18 @@ class ProposeAddTaskAdmin(ProposalPropose):
 
         return inputs, outputs
 
-    def validate_state(self, context, message, inputs, input_state, store, signer):
+    def validate_state(self, context, message, payload, input_state, store):
         """Validates that:
         1. the proposed user is not already an admin of the task"""
         super().validate_state(
             context=context,
             message=message,
-            inputs=inputs,
+            payload=payload,
             input_state=input_state,
             store=store,
-            signer=signer,
         )
         if addresser.task.admin.exists_in_state_inputs(
-            inputs=inputs,
+            inputs=payload.inputs,
             input_state=input_state,
             object_id=message.task_id,
             related_id=message.user_id,

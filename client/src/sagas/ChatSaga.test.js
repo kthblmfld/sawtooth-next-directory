@@ -18,9 +18,8 @@ import { call, put } from 'redux-saga/effects';
 
 
 import FixtureAPI from 'services/FixtureApi';
-import socket from 'services/Socket';
-import ChatActions from 'redux/ChatRedux';
-import { getConversation, sendMessage } from 'sagas/ChatSaga';
+import { ChatActions } from 'state';
+import { getConversation } from 'sagas/ChatSaga';
 
 
 const stepper = (fn) => (mock) => fn.next(mock).value;
@@ -36,12 +35,13 @@ test('chat conversation', () => {
   expect(step()).toEqual(call(FixtureAPI.getConversation, id));
 });
 
+
 test('conversation success', () => {
   const id = '490d7d4c-6e07-4795-b785-7a0146d4ec0f';
   const res = FixtureAPI.getConversation(id);
 
   const step = stepper(getConversation(FixtureAPI, {
-    id: id,
+    id,
   }));
 
   step();
@@ -50,24 +50,16 @@ test('conversation success', () => {
 
 });
 
+
 test('conversation failure', () => {
   const res = { ok: false, data: {} };
   const id = '';
 
   const step = stepper(getConversation(FixtureAPI, {
-    id: id,
+    id,
   }));
 
   step();
   const stepRes = step(res);
   expect(stepRes).toEqual(put(ChatActions.conversationFailure(res.data.error)));
-});
-
-test.skip('send message', () => {
-  const message = 'text message';
-
-  const step = stepper(sendMessage(socket, { payload: message }));
-
-  expect(step()).toEqual(call(FixtureAPI.sendMessage, message));
-
 });

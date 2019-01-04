@@ -34,7 +34,10 @@ const props = {
   openSocket: () => {},
   closeSocket: () => {},
   me: {
-    proposals: [{ id: 'proposalID' }],
+    proposals: [{
+      id: 'proposalID',
+      metadata: '',
+    }],
     memberOf: [''],
   },
   roles: [],
@@ -50,7 +53,10 @@ const newProps = {
   isSocketOpen: true,
   sendMessage: () => { },
   me: {
-    proposals: [{ id: 'proposalID' }],
+    proposals: [{
+      id: 'proposalID',
+      metadata: '',
+    }],
     memberOf: [''],
   },
   id: 'aaa',
@@ -59,7 +65,7 @@ const newProps = {
   },
 };
 
-const wrapper = shallow(<App {...props} store={store} />);
+const wrapper = shallow(<App {...props} store={store}/>);
 
 
 it('renders without crashing', () => {
@@ -67,13 +73,15 @@ it('renders without crashing', () => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter><App {...props} /></BrowserRouter>
+      <BrowserRouter>
+        <App {...props}/>
+      </BrowserRouter>
     </Provider>, div
   );
 
   ReactDOM.unmountComponentAtNode(div);
 
-  const wrapper = shallow(<App {...newProps} store={store} />);
+  const wrapper = shallow(<App {...newProps} store={store}/>);
   wrapper.dive().instance().componentDidUpdate(props);
 });
 
@@ -87,7 +95,11 @@ it('calls the hydrate function', () => {
 });
 
 test('calls the hydrate sidebar function', () => {
-  const wrapper = shallow(<App defaultUser = {props.me}
-    routes={() => { }} store={store} />);
+  const wrapper = shallow(
+    <App
+      defaultUser={props.me}
+      routes={() => { }}
+      store={store}/>
+  );
   wrapper.dive().instance().hydrateSidebar();
 });

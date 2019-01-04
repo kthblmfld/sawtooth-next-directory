@@ -12,20 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -----------------------------------------------------------------------------
-"""Implements the CREATE_USER message
-usage: rbac.user.create()"""
+""" Implements the CREATE_USER message
+    usage: rbac.user.new()
+"""
 import logging
 
 from rbac.common import addresser
 from rbac.common.base.base_message import BaseMessage
-from rbac.common.crypto.keys import Key
 
 LOGGER = logging.getLogger(__name__)
 
 
 class CreateUser(BaseMessage):
-    """Implements the CREATE_USER message
-    usage: rbac.user.create()"""
+    """ Implements the CREATE_USER message
+        usage: rbac.user.new()
+    """
 
     def __init__(self):
         super().__init__()
@@ -56,33 +57,9 @@ class CreateUser(BaseMessage):
         """The related type from AddressSpace implemented by this class"""
         return addresser.RelationshipType.ATTRIBUTES
 
-    def make_with_key(
-        self,
-        name,
-        user_id=None,
-        username=None,
-        email=None,
-        metadata=None,
-        manager_id=None,
-    ):
-        """Makes a CreateUser message with a new keypair"""
-        keypair = Key()
-        if user_id is None:
-            user_id = keypair.public_key
-
-        message = self.make(
-            user_id=user_id,
-            name=name,
-            username=username,
-            email=email,
-            metadata=metadata,
-            manager_id=manager_id,
-        )
-        return message, keypair
-
-    def make_addresses(self, message, signer_keypair):
+    def make_addresses(self, message, signer_user_id):
         """Makes the appropriate inputs & output addresses for the message type"""
-        inputs, _ = super().make_addresses(message, signer_keypair)
+        inputs, _ = super().make_addresses(message, signer_user_id)
 
         user_address = self.address(object_id=message.user_id)
         inputs.add(user_address)
@@ -111,53 +88,48 @@ class CreateUser(BaseMessage):
 
     def validate(self, message, signer=None):
         """Validates the message values"""
-        signer = super().validate(message=message, signer=signer)
+        super().validate(message=message, signer=signer)
         if len(message.name) < 5:
             raise ValueError("Users must have names longer than 4 characters")
         if message.manager_id is not None:
             if message.user_id == message.manager_id:
                 raise ValueError("User cannot be their own manager")
-        if signer is not None:
-            if signer not in [message.user_id, message.manager_id]:
-                raise ValueError("Signer must be the user or their manager")
 
-    def validate_state(self, context, message, inputs, input_state, store, signer):
+    def validate_state(self, context, message, payload, input_state, store):
         """Validates the message against state"""
         super().validate_state(
             context=context,
             message=message,
-            inputs=inputs,
+            payload=payload,
             input_state=input_state,
             store=store,
-            signer=signer,
         )
         if addresser.user.exists_in_state_inputs(
-            inputs=inputs, input_state=input_state, object_id=message.user_id
+            inputs=payload.inputs, input_state=input_state, object_id=message.user_id
         ):
             raise ValueError(
                 "User with id {} already exists in state".format(message.user_id)
             )
         if message.manager_id and not addresser.user.exists_in_state_inputs(
-            inputs=inputs, input_state=input_state, object_id=message.manager_id
+            inputs=payload.inputs, input_state=input_state, object_id=message.manager_id
         ):
             raise ValueError(
                 "Manager with id {} does not exist in state".format(message.manager_id)
             )
 
-    def apply_update(
-        self, message, object_id, related_id, outputs, output_state, signer
-    ):
+    def apply_update(self, message, payload, object_id, related_id, output_state):
         """Stores data beyond the user record"""
         if message.key:
             addresser.key.store(
                 object_id=message.key,
                 message=message,
-                outputs=outputs,
+                outputs=payload.outputs,
                 output_state=output_state,
             )
             addresser.user.key.create_relationship(
                 object_id=object_id,
                 related_id=message.key,
-                outputs=outputs,
+                outputs=payload.outputs,
                 output_state=output_state,
+                created_date=payload.now,
             )

@@ -46,10 +46,10 @@ export default class Avatar extends Component {
    */
   generatePlaceholder = () => {
     const { users, userId } = this.props;
-    const user = users.find(user => user.id === userId);
+    const user = users && users.find(user => user.id === userId);
 
     if (!user) return '?';
-    let names = user.name.split(' ');
+    const names = user.name.split(' ');
     let initials = names[0]
       .substring(0, 1)
       .toUpperCase();

@@ -37,20 +37,22 @@ describe('CreateRole component', () => {
     createRole: () => {},
     id: 'abc',
   };
-  const wrapper = shallow(<CreateRole {...props} />);
+  const wrapper = shallow(<CreateRole {...props}/>);
 
   it('renders without crashing', () => {
     const div = document.createElement('div');
 
     ReactDOM.render(
       <Provider store={store}>
-        <BrowserRouter><CreateRole/></BrowserRouter>
+        <BrowserRouter>
+          <CreateRole/>
+        </BrowserRouter>
       </Provider>, div
     );
 
     ReactDOM.unmountComponentAtNode(div);
   });
-  wrapper.find('#next-approver-manage-content-form').simulate('change',
+  wrapper.find('#next-approver-manage-create-role-form').simulate('change',
     { event: {} }, { name: 'name', value: '' });
   wrapper.instance().createRole(props);
 });

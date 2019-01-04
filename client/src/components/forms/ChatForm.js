@@ -35,6 +35,7 @@ class ChatForm extends Component {
     activeRole:           PropTypes.object,
     approve:              PropTypes.func,
     disabled:             PropTypes.bool,
+    formDisabled:         PropTypes.bool,
     messages:             PropTypes.array,
     reject:               PropTypes.func,
     requestPack:          PropTypes.func,
@@ -88,7 +89,7 @@ class ChatForm extends Component {
    * @param {boolean} shouldRefresh If app should refresh on next
    *                                message received
    */
-  handleSend (message, shouldRefresh) {
+  handleSend = (message, shouldRefresh) => {
     const { refreshOnNextSocketReceive, send } = this.props;
     shouldRefresh && refreshOnNextSocketReceive(true);
     send(message);
@@ -149,8 +150,8 @@ class ChatForm extends Component {
     const { message } = this.state;
     if (!payload.startsWith('/') || payload.indexOf('{') === -1) return payload;
 
-    let demarcation = payload.indexOf('{');
-    let parsed = JSON.parse(
+    const demarcation = payload.indexOf('{');
+    const parsed = JSON.parse(
       payload.substring(demarcation, payload.length)
     );
 
@@ -197,7 +198,9 @@ class ChatForm extends Component {
                 this.handleSend(this.createPayload(button.payload), isDraft)}>
 
               { !disabled &&
-                <span>{button.title}</span>
+                <span>
+                  {button.title}
+                </span>
               }
               { disabled &&
                 <span></span>
@@ -232,10 +235,12 @@ class ChatForm extends Component {
           onClick={() => this.handleApprove(1)}>
 
           { !disabled &&
-              <span>Approve</span>
+            <span>
+              Approve
+            </span>
           }
           { disabled &&
-              <span></span>
+            <span></span>
           }
         </Button>
         <Button
@@ -246,10 +251,12 @@ class ChatForm extends Component {
           onClick={() => this.handleApprove(0)}>
 
           { !disabled &&
-              <span>Reject</span>
+            <span>
+              Reject
+            </span>
           }
           { disabled &&
-              <span></span>
+          <span></span>
           }
         </Button>
       </div>
@@ -262,13 +269,13 @@ class ChatForm extends Component {
    * @returns {JSX}
    */
   render () {
-    const { socketMaxAttemptsReached, type } = this.props;
+    const { formDisabled, socketMaxAttemptsReached, type } = this.props;
     const { message, isDraft } = this.state;
     const isManual = type === 'REQUESTER' && socketMaxAttemptsReached;
 
     return (
       <div>
-        { !isDraft && !socketMaxAttemptsReached &&
+        { !isDraft && !socketMaxAttemptsReached && !formDisabled &&
         <div>
           <Form id='next-placeholder-chat'
             onSubmit={() => this.handleSend(message)}>
@@ -297,6 +304,7 @@ class ChatForm extends Component {
               this.handleSend(`/send{"reason": "${message}"}`, true)}>
             <Form.TextArea id='next-chat-form-draft-textarea'
               placeholder='Draft your message...'
+              autoFocus
               name='message'
               value={message}
               onChange={this.handleChange}/>

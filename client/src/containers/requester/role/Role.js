@@ -20,7 +20,7 @@ import { Container, Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 
-import { RequesterSelectors } from 'redux/RequesterRedux';
+import { RequesterSelectors } from 'state';
 
 
 import Chat from 'components/chat/Chat';
@@ -31,6 +31,7 @@ import MemberList from './MemberList';
 
 import './Role.css';
 import glyph from 'images/header-glyph-role.png';
+import * as utils from 'services/Utils';
 
 
 /**
@@ -79,14 +80,6 @@ export class Role extends Component {
   };
 
 
-  subtitle = () => {
-    const membersCount = [...this.role.members, ...this.role.owners].length;
-    return `${membersCount} ${membersCount > 1 || membersCount === 0 ?
-      'members' :
-      'member'}`;
-  };
-
-
   /**
    * Render entrypoint
    * @returns {JSX}
@@ -113,7 +106,13 @@ export class Role extends Component {
             glyph={glyph}
             waves
             title={this.role.name}
-            subtitle={this.subtitle()}
+            subtitle={
+              this.role && utils.countLabel([
+                ...this.role.members,
+                ...this.role.owners,
+              ]
+                .length, 'member')
+            }
             {...this.props}/>
           <div id='next-requester-roles-content'>
             { this.proposal &&
@@ -123,15 +122,20 @@ export class Role extends Component {
                 {...this.props}/>
             }
             <Container
-              className={!this.proposal ? 'next-margin-1' : ''}
+              className={this.proposal && this.proposal.status !== 'CONFIRMED' ?
+                '' : 'next-margin-1'}
               id='next-requester-roles-description-container'>
               <div id='next-requester-roles-description'>
-                <h5>DESCRIPTION</h5>
+                <h5>
+                  DESCRIPTION
+                </h5>
                 {this.role.description || 'No description available.'}
               </div>
             </Container>
             <Container id='next-requester-roles-member-list-container'>
-              <h5>MEMBERS</h5>
+              <h5>
+                MEMBERS
+              </h5>
               <MemberList {...this.props}
                 members={this.role.members}
                 owners={this.role.owners}/>
@@ -158,13 +162,10 @@ export class Role extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.match.params;
-  const { roles } = state.requester;
 
   return {
     roleId: id,
-    proposalId: RequesterSelectors.proposalIdFromObjectId(
-      state, roles, id, 'role'
-    ),
+    proposalId: RequesterSelectors.roleProposalId(state, id),
   };
 };
 

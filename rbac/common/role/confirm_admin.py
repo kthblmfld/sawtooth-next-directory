@@ -49,15 +49,15 @@ class ConfirmAddRoleAdmin(ProposalConfirm):
         """The relationship type this message acts upon"""
         return addresser.RelationshipType.ADMIN
 
-    def make_addresses(self, message, signer_keypair):
+    def make_addresses(self, message, signer_user_id):
         """Makes the appropriate inputs & output addresses for the message"""
-        inputs, outputs = super().make_addresses(message, signer_keypair)
+        inputs, outputs = super().make_addresses(message, signer_user_id)
 
         user_address = addresser.user.address(message.related_id)
         inputs.add(user_address)
 
         signer_admin_address = addresser.role.admin.address(
-            message.object_id, signer_keypair.public_key
+            message.object_id, signer_user_id
         )
         inputs.add(signer_admin_address)
 
@@ -75,16 +75,15 @@ class ConfirmAddRoleAdmin(ProposalConfirm):
 
         return inputs, outputs
 
-    def validate_state(self, context, message, inputs, input_state, store, signer):
+    def validate_state(self, context, message, payload, input_state, store):
         """Validates that:
         1. the signer is an admin of the role"""
         super().validate_state(
             context=context,
             message=message,
-            inputs=inputs,
+            payload=payload,
             input_state=input_state,
             store=store,
-            signer=signer,
         )
         # TODO: change to verify proposal assignment and hierarchy
 
@@ -92,21 +91,20 @@ class ConfirmAddRoleAdmin(ProposalConfirm):
     #            inputs=inputs,
     #            input_state=input_state,
     #            object_id=message.object_id,
-    #            related_id=signer,
+    #            related_id=paylaod.signer.user_id,
     #        ):
     #            raise ValueError(
     #                "Signer {} must be an admin of the role {}".format(
-    #                    signer, message.object_id
+    #                    payload.signer.user_id, message.object_id
     #                )
     #            )
 
-    def apply_update(
-        self, message, object_id, related_id, outputs, output_state, signer
-    ):
+    def apply_update(self, message, payload, object_id, related_id, output_state):
         """Create admin address"""
         addresser.role.admin.create_relationship(
             object_id=object_id,
             related_id=related_id,
-            outputs=outputs,
+            outputs=payload.outputs,
             output_state=output_state,
+            created_date=payload.now,
         )

@@ -19,8 +19,9 @@ import { toast } from 'react-toastify';
 
 
 import { store } from 'customStore';
-import AuthActions from 'redux/AuthRedux';
+import { logout } from 'containers/app/AppHelper';
 import * as storage from 'services/Storage';
+import * as utils from 'services/Utils';
 
 
 /**
@@ -67,13 +68,19 @@ const create = (baseURL =
   api.addResponseTransform(res => {
     switch (res.problem) {
       case 'TIMEOUT_ERROR':
-        toast('Server is not responding. Please try again later.');
+        toast.error('Server is not responding. Please try again later.', {
+          toastId: utils.nearestMinute(1000),
+        });
         return;
       case 'NETWORK_ERROR':
-        toast('Server currently unavailable. Please try again later.');
+        toast.error('Network error encountered. Please try again later.', {
+          toastId: utils.nearestMinute(1000),
+        });
         return;
       case 'CONNECTION_ERROR':
-        toast('Cannot connect to server. Please try again later.');
+        toast.error('Connection error encounterd. Please try again later.', {
+          toastId: utils.nearestMinute(1000),
+        });
         return;
       default:
         break;
@@ -82,7 +89,10 @@ const create = (baseURL =
       case 200:
         break;
       case 401:
-        store.dispatch(AuthActions.logoutRequest());
+        toast.warn('For security reasons, your session has expired.', {
+          toastId: utils.nearestMinute(),
+        });
+        logout(store.dispatch);
         break;
       case 404:
         break;
@@ -121,13 +131,13 @@ const create = (baseURL =
   const login = (creds) => api.post('authorization', creds);
   const getProposal = (id) => api.get(`proposals/${id}`);
   const getRole = (id) => api.get(`roles/${id}`);
-  const getRoles = () => api.get('roles');
+  const getRoles = (start, limit) => api.get('roles', { start, limit });
   const getPack = (id) => api.get(`packs/${id}`);
-  const getPacks = () => api.get('packs');
+  const getPacks = (start, limit) => api.get('packs', { start, limit });
   const getRelationships = (id) => api.get(`users/${id}/relationships`);
   const getRoot = () => api.get('');
   const getUser = (id) => api.get(`users/${id}`);
-  const getUsers = () => api.get('users', { limit: 15 });
+  const getUsers = (start, limit) => api.get('users', { start, limit });
   const requestPackAccess = (id, body) => api.post(`packs/${id}/members`, body);
   const requestRoleAccess = (id, body) => api.post(`roles/${id}/members`, body);
   const search = (query) => api.post('', { q: query });

@@ -23,6 +23,10 @@ body,
   float: right;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .dark {
   background: @darkBackground;
 }
@@ -89,4 +93,13 @@ body,
 .avatar-palette-12 {
   background: @avatarPalette12;
   color: @avatarPalette12TextColor;
+}
+
+.toast {
+  border-radius: 1em !important;
+  padding: 20px !important;
+}
+
+.toast.Toastify__toast--warning {
+  color: #1d1e27;
 }

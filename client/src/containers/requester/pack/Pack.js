@@ -20,7 +20,7 @@ import { Container, Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 
-import { RequesterSelectors } from 'redux/RequesterRedux';
+import { RequesterSelectors } from 'state';
 import Chat from 'components/chat/Chat';
 import TrackHeader from 'components/layouts/TrackHeader';
 import PackApproval from './PackApproval';
@@ -30,6 +30,7 @@ import RolesList from './RolesList';
 
 import './Pack.css';
 import glyph from 'images/header-glyph-pack.png';
+import * as utils from 'services/Utils';
 
 
 /**
@@ -87,6 +88,9 @@ export class Pack extends Component {
     if (!this.pack) return null;
     this.proposals = proposalsFromIds(proposalIds);
 
+    const showApprovalCard = this.proposals && this.proposals.length &&
+      this.proposals.some(proposal => proposal.status !== 'CONFIRMED');
+
     return (
       <Grid id='next-requester-grid'>
         <Grid.Column
@@ -96,10 +100,13 @@ export class Pack extends Component {
             inverted
             glyph={glyph}
             waves
+            subtitle={this.pack && utils.countLabel(
+              this.pack.roles.length, 'role')
+            }
             title={this.pack.name}
             {...this.props}/>
           <div id='next-requester-packs-content'>
-            { this.proposals && this.proposals.length > 0 &&
+            { showApprovalCard &&
               <div>
                 <PackApproval
                   proposals={this.proposals}
@@ -109,12 +116,22 @@ export class Pack extends Component {
                   {...this.props}/>
               </div>
             }
-            <Container id='next-requester-packs-description-container'>
+            <Container
+              className={showApprovalCard ? '' : 'next-margin-1'}
+              id='next-requester-packs-description-container'>
               <div id='next-requester-packs-description'>
-                {this.pack.description}
+                <h5>
+                  DESCRIPTION
+                </h5>
+                {this.pack.description || 'No description available.'}
               </div>
             </Container>
-            <RolesList activePack={this.pack} {...this.props}/>
+            <Container id='next-requester-packs-roles-list-container'>
+              <h5>
+                ROLES
+              </h5>
+              <RolesList activePack={this.pack} {...this.props}/>
+            </Container>
           </div>
         </Grid.Column>
         <Grid.Column
@@ -134,13 +151,10 @@ export class Pack extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.match.params;
-  const { packs } = state.requester;
 
   return {
     packId: id,
-    proposalIds: RequesterSelectors.proposalIdFromObjectId(
-      state, packs, id, 'pack'
-    ),
+    proposalIds: RequesterSelectors.packProposalIds(state, id),
   };
 };
 

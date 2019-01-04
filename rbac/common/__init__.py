@@ -24,6 +24,7 @@ from rbac.common import addresser
 from rbac.common.user import USER as user
 from rbac.common.role import ROLE as role
 from rbac.common.task import TASK as task
+from rbac.common.key import KEY as key
 
 LOGGER = logging.getLogger(__name__)
 
@@ -36,9 +37,11 @@ class RbacLibrary:
         self.user = user
         self.role = role
         self.task = task
+        self.key = key
 
 
 # pylint: disable=invalid-name
 rbac = RbacLibrary()
+
 
 __all__ = ["rbac"]

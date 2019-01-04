@@ -27,14 +27,15 @@ import Browse from './Browse';
 
 const store = customStore.create();
 const props = {
-  getAllRoles: () => { },
-  allRoles: [{ id: 'role-id-1' }, { id: 'role-id-2' }],
+  browseData: [],
+  getAllPacks: () => {},
+  getAllRoles: () => {},
 };
 const prevProp = {
-  allRoles: null,
+  browseData: [],
 };
-const formatedData = [[{ id: 'role-id-1' }], [{ id: 'role-id-2' }], [], []];
-const wrapper = shallow(<Browse store={store} {...props} />);
+const column = [{ id: 'role-id-1' }, { id: 'role-id-2' }];
+const wrapper = shallow(<Browse store={store} {...props}/>);
 
 
 it('renders without crashing', () => {
@@ -42,21 +43,23 @@ it('renders without crashing', () => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter><Browse /></BrowserRouter>
+      <BrowserRouter>
+        <Browse {...props}/>
+      </BrowserRouter>
     </Provider>, div
   );
 
   ReactDOM.unmountComponentAtNode(div);
 });
 
-test('Browse component update', () => {
-  wrapper.dive(props).instance().componentDidUpdate(prevProp);
+it('calls renderPlaceholder function', () => {
+  wrapper.dive(props).instance().renderPlaceholder();
 });
 
-it('calls formatData function', () => {
-  wrapper.dive(props).instance().formatData(props.allRoles);
+it('calls renderColumns function', () => {
+  wrapper.dive(props).instance().renderColumns(column);
 });
 
-it('calls renderLayout function', () => {
-  wrapper.dive(props).instance().renderLayout(formatedData);
+it('calls loadNext function', () => {
+  wrapper.dive(props).instance().loadNext();
 });

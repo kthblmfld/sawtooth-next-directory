@@ -21,6 +21,7 @@ import { Button, Form, Grid } from 'semantic-ui-react';
 
 import './CreateRole.css';
 import TrackHeader from 'components/layouts/TrackHeader';
+import * as theme from 'services/Theme';
 
 
 /**
@@ -31,7 +32,31 @@ import TrackHeader from 'components/layouts/TrackHeader';
  */
 class CreateRole extends Component {
 
-  state = { name: '', validName: null };
+  themes = ['minimal', 'contrast', 'magenta'];
+
+
+  state = {
+    description:    '',
+    name:           '',
+    validName:      null,
+  };
+
+
+  /**
+   * Entry point to perform tasks required to render
+   * component.
+   */
+  componentDidMount () {
+    theme.apply(this.themes);
+  }
+
+
+  /**
+   * Component teardown
+   */
+  componentWillUnmount () {
+    theme.remove(this.themes);
+  }
 
 
   /**
@@ -39,10 +64,11 @@ class CreateRole extends Component {
    * @param {string} name Name of role
    */
   createRole = () => {
-    const { name } = this.state;
+    const { description, name } = this.state;
     const { createRole, id } = this.props;
     createRole({
-      name:           name,
+      name,
+      description,
       owners:         [id],
       administrators: [id],
     });
@@ -87,27 +113,54 @@ class CreateRole extends Component {
           width={16}>
           <TrackHeader
             inverted
-            title='Roles'
+            title='Create Role'
+            breadcrumb={[
+              {name: 'Manage', slug: '/approval/manage'},
+              {name: 'Roles', slug: '/approval/manage/roles'},
+            ]}
             button={() =>
-              <Button as={Link} to='/approval/manage/roles'>Exit</Button>}
+              <Button
+                id='next-approver-manage-exit-button'
+                as={Link}
+                icon='close'
+                size='huge'
+                to='/approval/manage/roles'/>}
             {...this.props}/>
-          <div id='next-approver-manage-content'>
-            <Form>
-              <Form.Input
-                id='next-approver-manage-content-form'
+          <div id='next-approver-manage-create-role-content'>
+            <Form id='next-approver-manage-create-role-form'>
+              <h3>
+                Title
+              </h3>
+              <Form.Input id='next-create-role-title-field'
+                label='Create a descriptive name for your new role.'
                 autoFocus
                 error={validName === false}
                 name='name'
-                placeholder='Name'
+                placeholder='My Awesome Role'
                 onChange={this.handleChange}/>
+              <h3>
+                Description
+              </h3>
+              <Form.TextArea
+                rows='6'
+                label={`Create a compelling description of your new role
+                        that clearly explains its intended use.`}
+                name='description'
+                onChange={this.handleChange}
+                placeholder='A long time ago in a galaxy far, far away....'/>
             </Form>
-            <Button
-              as={Link}
-              to='/approval/manage/roles'
-              disabled={!validName}
-              onClick={this.createRole}>
-                Done
-            </Button>
+            <div id='next-approver-manage-create-role-toolbar'>
+              <Button
+                primary
+                as={Link}
+                size='large'
+                to='/approval/manage/roles'
+                id='next-approver-manage-create-role-done-button'
+                disabled={!validName}
+                onClick={this.createRole}>
+                  Done
+              </Button>
+            </div>
           </div>
         </Grid.Column>
       </Grid>

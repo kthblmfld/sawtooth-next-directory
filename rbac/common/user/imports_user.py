@@ -14,6 +14,7 @@
 # -----------------------------------------------------------------------------
 """Implements the IMPORTS_USER message
 usage: rbac.user.imports.create()"""
+
 import logging
 
 from rbac.common import addresser
@@ -56,9 +57,9 @@ class ImportsUser(BaseMessage):
         """The related type from AddressSpace implemented by this class"""
         return addresser.RelationshipType.ATTRIBUTES
 
-    def make_addresses(self, message, signer_keypair):
+    def make_addresses(self, message, signer_user_id):
         """Makes the appropriate inputs & output addresses for the message type"""
-        inputs, _ = super().make_addresses(message, signer_keypair)
+        inputs, _ = super().make_addresses(message, signer_user_id)
 
         user_address = self.address(object_id=message.user_id)
         inputs.add(user_address)
@@ -85,18 +86,17 @@ class ImportsUser(BaseMessage):
         signer of the message (e.g. IMPORT_USER)"""
         return True
 
-    def validate_state(self, context, message, inputs, input_state, store, signer):
+    def validate_state(self, context, message, payload, input_state, store):
         """Validates the message against state"""
         super().validate_state(
             context=context,
             message=message,
-            inputs=inputs,
+            payload=payload,
             input_state=input_state,
             store=store,
-            signer=signer,
         )
         if addresser.user.exists_in_state_inputs(
-            inputs=inputs, input_state=input_state, object_id=message.user_id
+            inputs=payload.inputs, input_state=input_state, object_id=message.user_id
         ):
             LOGGER.warning(
                 # import is replayable, we'll verify information is up-to-date instead
@@ -104,20 +104,19 @@ class ImportsUser(BaseMessage):
                 message.user_id,
             )
 
-    def apply_update(
-        self, message, object_id, related_id, outputs, output_state, signer
-    ):
+    def apply_update(self, message, payload, object_id, related_id, output_state):
         """Stores data beyond the user record"""
         if message.key:
             addresser.key.store(
                 object_id=message.key,
                 message=message,
-                outputs=outputs,
+                outputs=payload.outputs,
                 output_state=output_state,
             )
             addresser.user.key.create_relationship(
                 object_id=object_id,
                 related_id=message.key,
-                outputs=outputs,
+                outputs=payload.outputs,
                 output_state=output_state,
+                created_date=payload.now,
             )

@@ -49,9 +49,9 @@ class ProposeAddRoleOwner(ProposalPropose):
         """The relationship type this message acts upon"""
         return addresser.RelationshipType.OWNER
 
-    def make_addresses(self, message, signer_keypair):
+    def make_addresses(self, message, signer_user_id):
         """Makes the appropriate inputs & output addresses for the message"""
-        inputs, outputs = super().make_addresses(message, signer_keypair)
+        inputs, outputs = super().make_addresses(message, signer_user_id)
 
         relationship_address = addresser.role.owner.address(
             message.role_id, message.user_id
@@ -72,19 +72,18 @@ class ProposeAddRoleOwner(ProposalPropose):
 
         return inputs, outputs
 
-    def validate_state(self, context, message, inputs, input_state, store, signer):
+    def validate_state(self, context, message, payload, input_state, store):
         """Validates that:
         1. the proposed user is not already an owner of the role"""
         super().validate_state(
             context=context,
             message=message,
-            inputs=inputs,
+            payload=payload,
             input_state=input_state,
             store=store,
-            signer=signer,
         )
         if addresser.role.owner.exists_in_state_inputs(
-            inputs=inputs,
+            inputs=payload.inputs,
             input_state=input_state,
             object_id=message.role_id,
             related_id=message.user_id,

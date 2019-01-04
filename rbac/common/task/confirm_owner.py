@@ -49,21 +49,21 @@ class ConfirmAddTaskOwner(ProposalConfirm):
         """The relationship type this message acts upon"""
         return addresser.RelationshipType.OWNER
 
-    def make_addresses(self, message, signer_keypair):
+    def make_addresses(self, message, signer_user_id):
         """Makes the appropriate inputs & output addresses for the message"""
-        inputs, outputs = super().make_addresses(message, signer_keypair)
+        inputs, outputs = super().make_addresses(message, signer_user_id)
 
         user_address = addresser.user.address(message.related_id)
         inputs.add(user_address)
 
         # should be owner not admin
         signer_admin_address = addresser.task.admin.address(
-            message.object_id, signer_keypair.public_key
+            message.object_id, signer_user_id
         )
         inputs.add(signer_admin_address)
 
         signer_owner_address = addresser.task.owner.address(
-            message.object_id, signer_keypair.public_key
+            message.object_id, signer_user_id
         )
         inputs.add(signer_owner_address)
 
@@ -81,43 +81,41 @@ class ConfirmAddTaskOwner(ProposalConfirm):
 
         return inputs, outputs
 
-    def validate_state(self, context, message, inputs, input_state, store, signer):
+    def validate_state(self, context, message, payload, input_state, store):
         """Validates that:
         1. the signer is an owner of the task"""
         super().validate_state(
             context=context,
             message=message,
-            inputs=inputs,
+            payload=payload,
             input_state=input_state,
             store=store,
-            signer=signer,
         )
         # TODO: change to verify proposal assignment and hierarchy
 
     #        if not addresser.task.owner.exists_in_state_inputs(
-    #            inputs=inputs,
+    #            inputs=payload.inputs,
     #            input_state=input_state,
     #            object_id=message.object_id,
-    #            related_id=signer,
+    #            related_id=payload.signer.user_id,
     #        ) and not addresser.task.admin.exists_in_state_inputs(
-    #            inputs=inputs,
+    #            inputs=payload.inputs,
     #            input_state=input_state,
     #            object_id=message.object_id,
-    #            related_id=signer,
+    #            related_id=payload.signer.user_id,
     #        ):
     #            raise ValueError(
     #                "Signer {} must be an owner or admin of the task {}".format(
-    #                    signer, message.object_id
+    #                    payload.signer.user_id, message.object_id
     #                )
     #            )
 
-    def apply_update(
-        self, message, object_id, related_id, outputs, output_state, signer
-    ):
+    def apply_update(self, message, payload, object_id, related_id, output_state):
         """Create owner address"""
         addresser.task.owner.create_relationship(
             object_id=object_id,
             related_id=related_id,
-            outputs=outputs,
+            outputs=payload.outputs,
             output_state=output_state,
+            created_date=payload.now,
         )

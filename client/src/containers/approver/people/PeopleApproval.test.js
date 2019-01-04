@@ -29,15 +29,19 @@ const store = customStore.create();
 const props = {
   getOpenProposals: () => { },
   userFromId: () => { },
+  getUser: () => {},
   openProposals: [''],
+  match: { params: {} },
 };
 
 const newprops = {
   getOpenProposals: () => { },
   userFromId: () => { },
+  getUser: () => {},
   openProposals: [],
+  match: { params: {} },
 };
-const wrapper = shallow(<PeopleApproval {...props} store={store} />);
+const wrapper = shallow(<PeopleApproval {...props} store={store}/>);
 
 
 it('renders without crashing', () => {
@@ -45,13 +49,17 @@ it('renders without crashing', () => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter><PeopleApproval {...props} /></BrowserRouter>
+      <BrowserRouter>
+        <PeopleApproval {...props}/>
+      </BrowserRouter>
     </Provider>, div
   );
 
   ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter><PeopleApproval {...newprops} /></BrowserRouter>
+      <BrowserRouter>
+        <PeopleApproval {...newprops}/>
+      </BrowserRouter>
     </Provider>, div
   );
 

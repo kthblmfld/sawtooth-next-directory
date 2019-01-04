@@ -28,7 +28,7 @@ limitations under the License.
  * @returns {string}
  */
 export const createSlug = (id, parent) => {
-  let slug = parent && parent.id ? parent.id : id;
+  const slug = parent && parent.id ? parent.id : id;
   try {
     return slug;
   } catch (error) {
@@ -48,7 +48,7 @@ export const createHomeLink = (packs = [], roles = []) => {
     return '/';
   } catch (error) {
     console.error(error);
-    console.error('Error creating home link');
+    console.error('Error creating home link.');
     return '/';
   }
 };
@@ -63,13 +63,25 @@ export const groupBy = (array, key) => {
 };
 
 
+/**
+ * Uniquely merge arrays
+ * @param {array} array1 1st array
+ * @param {array} array2 2nd array
+ * @returns {array}
+ */
 export const merge = (array1, array2) => {
-  return [...new Set([
-    ...array1,
-    ...array2,
-  ]
-    .map(object => JSON.stringify(object)))]
-    .map(string => JSON.parse(string));
+  try {
+    return [...new Set([
+      ...array1,
+      ...array2,
+    ]
+      .map(object => JSON.stringify(object)))]
+      .map(string => JSON.parse(string));
+  } catch (error) {
+    console.error(error);
+    console.error('Error merging arrays. Check values:', array1, array2);
+    return null;
+  }
 };
 
 
@@ -82,6 +94,24 @@ export const arraysEqual = (array1, array2) => {
     if (array1[i] !== array2[i]) return false;
 
   return true;
+};
+
+
+export const nearestMinute = (seconds = 1000 * 60) =>
+  new Date(Math.round(new Date().getTime() / seconds) * seconds).getTime();
+
+
+export const sort = (array, key) =>
+  array.sort((a, b) => {
+    if (a[key] < b[key]) return -1;
+    if (a[key] > b[key]) return 1;
+    return 0;
+  });
+
+
+export const countLabel = (count, name, showMeLabelIfOne) => {
+  const youLabel = showMeLabelIfOne ? ' (You)' : '';
+  return `${count} ${count > 1 || count === 0 ? name + 's' : name} ${youLabel}`;
 };
 
 

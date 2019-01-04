@@ -54,12 +54,12 @@ class RejectAddRoleTask(ProposalReject):
         """The relationship type this message acts upon"""
         return addresser.RelationshipType.MEMBER
 
-    def make_addresses(self, message, signer_keypair):
+    def make_addresses(self, message, signer_user_id):
         """Makes the appropriate inputs & output addresses for the message"""
-        inputs, outputs = super().make_addresses(message, signer_keypair)
+        inputs, outputs = super().make_addresses(message, signer_user_id)
 
         signer_task_owner_address = addresser.task.owner.address(
-            message.related_id, signer_keypair.public_key
+            message.related_id, signer_user_id
         )
         inputs.add(signer_task_owner_address)
 
@@ -71,16 +71,15 @@ class RejectAddRoleTask(ProposalReject):
 
         return inputs, outputs
 
-    def validate_state(self, context, message, inputs, input_state, store, signer):
+    def validate_state(self, context, message, payload, input_state, store):
         """Validates that:
         1. the signer is an owner of the task"""
         super().validate_state(
             context=context,
             message=message,
-            inputs=inputs,
+            payload=payload,
             input_state=input_state,
             store=store,
-            signer=signer,
         )
         # TODO: change to verify proposal assignment and hierarchy
 
@@ -89,10 +88,10 @@ class RejectAddRoleTask(ProposalReject):
 #            inputs=inputs,
 #            input_state=input_state,
 #            object_id=message.related_id,
-#            related_id=signer,
+#            related_id=payload.signer.user_id,
 #        ):
 #            raise ValueError(
 #                "Signer {} must be an owner of the task {}".format(
-#                    signer, message.object_id
+#                    payload.signer.user_id, message.object_id
 #                )
 #            )

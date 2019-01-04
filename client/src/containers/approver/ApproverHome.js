@@ -34,7 +34,7 @@ class ApproverHome extends Component {
    * Render entrypoint
    * @returns {JSX}
    */
-  render() {
+  render () {
     return (
       <Grid id='next-approver-grid'>
         <Grid.Column

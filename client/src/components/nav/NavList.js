@@ -36,6 +36,7 @@ import * as utils from '../../services/Utils';
 class NavList extends Component {
 
   static propTypes = {
+    disabled:         PropTypes.bool,
     labels:           PropTypes.array,
     location:         PropTypes.object,
     list:             PropTypes.array,
@@ -102,7 +103,9 @@ class NavList extends Component {
           <Image floated='left' src=''/>
 
           <List.Content className='pull-left next-nav-list-content'>
-            <List.Header>{item.name}</List.Header>
+            <List.Header>
+              {item.name}
+            </List.Header>
           </List.Content>
 
           { labels && labels[index] &&
@@ -123,13 +126,25 @@ class NavList extends Component {
    * @returns {JSX}
    */
   render () {
-    const { list, listTitle, route, titleIsLink } = this.props;
+    const {
+      list,
+      listTitle,
+      route,
+      disabled,
+      titleIsLink } = this.props;
 
     return (
-      <div className='next-nav-list-container'>
+      <div className={`next-nav-list-container ${disabled ?
+        'next-list-item-disabled' : ''}`}>
         { titleIsLink ?
-          <h4><Link to={route}>{listTitle}</Link></h4> :
-          <h4>{listTitle}</h4>
+          <h4>
+            <Link to={route}>
+              {listTitle}
+            </Link>
+          </h4> :
+          <h4>
+            {listTitle}
+          </h4>
         }
 
         { list && list.length !== 0 ?

@@ -29,7 +29,7 @@ describe('BrowseCard component', () => {
     const div = document.createElement('div');
 
     const props = {
-      details: {
+      resource: {
         name: '',
         category: '',
         admins: [],
@@ -39,14 +39,16 @@ describe('BrowseCard component', () => {
     };
 
     ReactDOM.render(
-      <BrowserRouter><BrowseCard {...props} /></BrowserRouter>, div
+      <BrowserRouter>
+        <BrowseCard {...props}/>
+      </BrowserRouter>, div
     );
     ReactDOM.unmountComponentAtNode(div);
   });
 
   it('calls prop `onToggle` when icon clicked', () => {
     const props = {
-      details: {
+      resource: {
         name: '',
         category: '',
         admins: [],
@@ -55,6 +57,6 @@ describe('BrowseCard component', () => {
       },
     };
 
-    const wrapper = shallow(<BrowseCard {...props} />);
+    const wrapper = shallow(<BrowseCard {...props}/>);
   });
 });

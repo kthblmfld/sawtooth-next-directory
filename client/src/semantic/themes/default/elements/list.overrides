@@ -10,28 +10,26 @@
   line-height: 0em;
 }
 
-.ui.inverted.list a.active .content.right.floated .basic.label {
-  background: none;
-  border-color: @white;
-  color: @white;
-  font-size: .8em;
-  line-height: 1.6em;
-  min-height: 1.65em;
-  padding: 0 10px !important;
-  text-indent: 0;
-}
-
-.ui.inverted.list a .content.right.floated .basic.label {
-  background: @grey;
-  border-color: @grey;
-  color: @white;
-  font-size: .8em;
-  line-height: 1.6em;
-  min-height: 1.65em;
-  padding: 0 10px !important;
-  text-indent: 0;
-}
-
 .ui.inverted.link.list .item {
   display: flex !important;
+}
+
+.nav-list h4 {
+  margin-top: .85rem;
+}
+
+.nav-list h4.hover:not(.active):hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.nav-list h4 a {
+  height: 100%;
+  display: inline-block;
+  padding: 0.8em 0.5em;
+  text-indent: 22px;
+  width: 100%;
+}
+
+.nav-list h4.active {
+  background: @magenta;
 }

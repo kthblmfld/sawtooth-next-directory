@@ -35,9 +35,9 @@ describe('CreateRole component', () => {
       name: 'name',
       owners: 'id1',
     },
-    createPack: () =>{},
+    createPack: () => {},
   };
-  const wrapper = shallow(<CreatePack {...props} />);
+  const wrapper = shallow(<CreatePack {...props}/>);
 
 
   it('renders without crashing', () => {
@@ -45,13 +45,15 @@ describe('CreateRole component', () => {
 
     ReactDOM.render(
       <Provider store={store}>
-        <BrowserRouter><CreatePack/></BrowserRouter>
+        <BrowserRouter>
+          <CreatePack/>
+        </BrowserRouter>
       </Provider>, div
     );
 
     ReactDOM.unmountComponentAtNode(div);
   });
-  wrapper.find('#next-approver-manage-content-pack-form').simulate('change',
+  wrapper.find('#next-approver-manage-create-pack-form').simulate('change',
     { event: {} }, { name: 'name', value: '' });
   wrapper.instance().createPack(props);
 });

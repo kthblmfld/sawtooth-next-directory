@@ -91,12 +91,14 @@ class MemberList extends Component {
       if (!user) {
         return (
           <Grid.Column key={userId} largeScreen={8} widescreen={5}>
-            <Segment className='secondary no-padding minimal'>
+            <Segment className='avatar secondary no-padding minimal'>
               <Header as='h4' className='next-member-list-user-info'>
                 <div>
                   <Avatar userId={userId} size='medium' {...this.props}/>
                 </div>
-                <div>Unavailable</div>
+                <div>
+                  Unavailable
+                </div>
               </Header>
             </Segment>
           </Grid.Column>
@@ -106,7 +108,7 @@ class MemberList extends Component {
       return (
         user &&
         <Grid.Column key={userId} largeScreen={8} widescreen={5}>
-          <Segment className='no-padding minimal'>
+          <Segment className='avatar no-padding minimal'>
             { isOwner ?
               <Icon
                 name='shield'
@@ -123,7 +125,9 @@ class MemberList extends Component {
               </div>
               <div>
                 {user && user.name}
-                <Header.Subheader>{user && user.email}</Header.Subheader>
+                <Header.Subheader>
+                  {user && user.email}
+                </Header.Subheader>
               </div>
             </Header>
 

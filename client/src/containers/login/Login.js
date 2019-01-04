@@ -23,7 +23,7 @@ import PropTypes from 'prop-types';
 
 import './Login.css';
 import logo from 'images/next-logo-billboard.png';
-import AuthActions, { AuthSelectors } from 'redux/AuthRedux';
+import { AuthActions, AuthSelectors } from 'state';
 import LoginForm from 'components/forms/LoginForm';
 
 
@@ -89,7 +89,7 @@ class Login extends Component {
    * Render entrypoint
    * @returns {JSX}
    */
-  render() {
+  render () {
     const { login } = this.props;
 
     return (
@@ -98,13 +98,17 @@ class Login extends Component {
           <Grid.Column id='next-login-column'>
             <Header inverted textAlign='center'>
               <Image centered src={logo} id='next-login-logo'/>
-              <h1>Sign in to NEXT Directory</h1>
+              <h1>
+                Sign in to NEXT Directory
+              </h1>
             </Header>
             <LoginForm submit={login}/>
           </Grid.Column>
         </Grid>
         <div id='next-login-new-account-container'>
-          <Link to='/signup'>Create an account</Link>
+          <Link to='/signup'>
+            Create an account
+          </Link>
         </div>
       </div>
     );

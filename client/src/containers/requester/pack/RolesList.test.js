@@ -34,18 +34,20 @@ describe('RolesList component', () => {
     roles: [{ id: 'role' }],
     getRoles: () => {},
   };
-  const wrapper = shallow(<RolesList {...props} />);
+  const wrapper = shallow(<RolesList {...props}/>);
 
   it('renders without crashing', () => {
     const div = document.createElement('div');
 
     ReactDOM.render(
-      <BrowserRouter><RolesList {...props} /></BrowserRouter>, div
+      <BrowserRouter>
+        <RolesList {...props}/>
+      </BrowserRouter>, div
     );
 
     ReactDOM.unmountComponentAtNode(div);
   });
   wrapper.instance().componentDidUpdate(props);
   wrapper.instance().renderUserInfo();
-  wrapper.instance().renderRoleSegment();
+  wrapper.instance().renderRoleCard();
 });

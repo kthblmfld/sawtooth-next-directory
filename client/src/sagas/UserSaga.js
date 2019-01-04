@@ -15,7 +15,7 @@ limitations under the License.
 
 
 import { all, call, fork, put } from 'redux-saga/effects';
-import UserActions from 'redux/UserRedux';
+import { UserActions } from 'state';
 
 
 /**
@@ -80,9 +80,13 @@ export function * getUsers (api, action) {
  */
 export function * getAllUsers (api, action) {
   try {
-    const res = yield call(api.getUsers);
+    const { start, limit } = action;
+    const res = yield call(api.getUsers, start, limit);
     res.ok ?
-      yield put(UserActions.allUsersSuccess(res.data.data)) :
+      yield put(UserActions.allUsersSuccess(
+        res.data.data,
+        res.data.paging.total)
+      ) :
       yield put(UserActions.allUsersFailure(res.data.message));
   } catch (err) {
     console.error(err);

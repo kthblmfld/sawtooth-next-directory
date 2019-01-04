@@ -21,7 +21,7 @@ import PropTypes from 'prop-types';
 
 
 import './Signup.css';
-import AuthActions, { AuthSelectors } from 'redux/AuthRedux';
+import { AuthActions, AuthSelectors } from 'state';
 import SignupForm from 'components/forms/SignupForm';
 import logo from 'images/next-logo-billboard.png';
 
@@ -74,7 +74,7 @@ class Signup extends Component {
       isAuthenticated,
       recommendedPacks,
       recommendedRoles } = this.props;
-    if(isAuthenticated) {
+    if (isAuthenticated) {
       history.push(
         storage.getViewState() ?
           '/approval/pending/individual' :
@@ -88,7 +88,7 @@ class Signup extends Component {
    * Render entrypoint
    * @returns {JSX}
    */
-  render() {
+  render () {
     const { signup } = this.props;
 
     return (
@@ -97,7 +97,9 @@ class Signup extends Component {
           <Grid.Column id='next-login-column'>
             <Header inverted textAlign='center'>
               <Image centered src={logo} id='next-login-logo'/>
-              <h1>Create an account</h1>
+              <h1>
+                Create an account
+              </h1>
             </Header>
             <SignupForm submit={signup}/>
           </Grid.Column>

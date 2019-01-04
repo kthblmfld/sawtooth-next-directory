@@ -32,37 +32,7 @@ message ProposeAddTaskOwner {
 }
 
 
-message ProposeRemoveTaskOwner {
-
-    string proposal_id = 1;
-
-    string task_id = 2;
-
-    string user_id = 3;
-
-    string reason = 4;
-
-    string metadata = 5;
-
-}
-
-
 message ProposeAddTaskAdmin {
-
-    string proposal_id = 1;
-
-    string task_id = 2;
-
-    string user_id = 3;
-
-    string reason = 4;
-
-    string metadata = 5;
-
-}
-
-
-message ProposeRemoveTaskAdmin {
 
     string proposal_id = 1;
 

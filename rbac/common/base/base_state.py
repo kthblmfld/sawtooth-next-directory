@@ -19,7 +19,6 @@ From the object_type name, it is able to infer information about how
 the object is stored on the blockchain: the state and container protubufs,
 and the unique identifier name"""
 # pylint: disable=too-many-public-methods
-
 import logging
 
 from rbac.common import protobuf
@@ -222,6 +221,9 @@ class StateBase:
             return getattr(item, "object_id")
         if hasattr(item, self._name_id):
             return getattr(item, self._name_id)
+        if hasattr(item, self._name_lower):
+            return getattr(item, self._name_lower)
+        LOGGER.warning("Could not find object_id on message\n%s", item)
         return None
 
     def _get_related_id(self, item):
@@ -525,7 +527,15 @@ class StateBase:
             ]
         return all_exist, not_found
 
-    def create_relationship(self, object_id, related_id, outputs, output_state):
+    def create_relationship(
+        self,
+        object_id,
+        related_id,
+        outputs,
+        output_state,
+        created_date=None,
+        expiration_date=None,
+    ):
         """Creates a relationship record in the output state for a transaction
         (Legacy relationship format)"""
         address = self.address(object_id=object_id, related_id=related_id)
@@ -546,6 +556,10 @@ class StateBase:
             setattr(store, self._name_id, object_id)
         if hasattr(store, "identifiers"):
             store.identifiers.append(related_id)
+        if created_date and hasattr(store, "created_date"):
+            store.created_date = created_date
+        if expiration_date and hasattr(store, "expiration_date"):
+            store.expiration_date = expiration_date
         container = self._state_container()
         getattr(container, self._state_container_list_name).extend([store])
         output_state[address] = container

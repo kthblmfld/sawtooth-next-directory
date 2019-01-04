@@ -13,6 +13,8 @@
 # limitations under the License.
 # ------------------------------------------------------------------------------
 
+import json as json_encode
+
 from uuid import uuid4
 
 from sanic import Blueprint
@@ -49,12 +51,19 @@ async def get_all_packs(request):
 @authorized()
 async def create_new_pack(request):
     """Create a new pack"""
-    required_fields = ["name"]
+    required_fields = ["owners", "name", "roles"]
     utils.validate_fields(required_fields, request.json)
 
     pack_id = str(uuid4())
     await packs_query.create_pack_resource(
-        request.app.config.DB_CONN, pack_id, request.json.get("name")
+        request.app.config.DB_CONN,
+        pack_id,
+        request.json.get("owners"),
+        request.json.get("name"),
+        request.json.get("description"),
+    )
+    await packs_query.add_roles(
+        request.app.config.DB_CONN, pack_id, request.json.get("roles")
     )
     return create_pack_response(request, pack_id)
 
@@ -83,6 +92,7 @@ async def add_pack_member(request, pack_id):
     pack_resource = await packs_query.fetch_pack_resource(
         request.app.config.DB_CONN, pack_id, head_block.get("num")
     )
+    request.json["metadata"] = json_encode.dumps({"pack_id": pack_id})
     for role_id in pack_resource.get("roles"):
         await roles.add_role_member(request, role_id)
     return json({"pack_id": pack_id})
@@ -91,16 +101,22 @@ async def add_pack_member(request, pack_id):
 @PACKS_BP.post("api/packs/<pack_id>/roles")
 # @authorized()
 async def add_pack_role(request, pack_id):
-    """Add a role to a pack"""
-    required_fields = ["role_id"]
+    """Add roles to a pack"""
+    required_fields = ["roles"]
     utils.validate_fields(required_fields, request.json)
-    await packs_query.add_role(
-        request.app.config.DB_CONN, pack_id, request.json.get("role_id")
+    await packs_query.add_roles(
+        request.app.config.DB_CONN, pack_id, request.json.get("roles")
     )
-    return json({"role_id": request.json.get("role_id")})
+    return json({"roles": request.json.get("roles")})
 
 
 def create_pack_response(request, pack_id):
     """Create pack response"""
-    pack_resource = {"id": pack_id}
+    pack_resource = {
+        "id": pack_id,
+        "name": request.json.get("name"),
+        "owners": request.json.get("owners"),
+        "roles": request.json.get("roles"),
+    }
+
     return json({"data": pack_resource})

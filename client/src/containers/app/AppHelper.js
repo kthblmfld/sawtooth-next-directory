@@ -14,13 +14,21 @@ limitations under the License.
 ----------------------------------------------------------------------------- */
 
 
-import AppActions, { AppSelectors } from 'redux/AppRedux';
-import ApproverActions, { ApproverSelectors } from 'redux/ApproverRedux';
-import AuthActions, { AuthSelectors } from 'redux/AuthRedux';
-import ChatActions, { ChatSelectors } from 'redux/ChatRedux';
-import UserActions, { UserSelectors } from 'redux/UserRedux';
-import RequesterActions, {
-  RequesterSelectors } from 'redux/RequesterRedux';
+import {
+  AppActions,
+  ApproverActions,
+  AuthActions,
+  ChatActions,
+  RequesterActions,
+  UserActions,
+
+  AppSelectors,
+  ApproverSelectors,
+  AuthSelectors,
+  ChatSelectors,
+  RequesterSelectors,
+  UserSelectors,
+} from 'state';
 
 
 //
@@ -49,6 +57,8 @@ export const appState = (state) => {
     openProposalsCount:  ApproverSelectors.openProposalsCount(state),
     organization:        ApproverSelectors.organization(state),
     onBehalfOf:          ApproverSelectors.onBehalfOf(state),
+    ownedPacks:          ApproverSelectors.ownedPacks(state),
+    ownedRoles:          ApproverSelectors.ownedRoles(state),
     openProposalFromId:  (id) =>
       ApproverSelectors.openProposalFromId(state, id),
 
@@ -65,6 +75,8 @@ export const appState = (state) => {
     requests:            RequesterSelectors.requests(state),
     packs:               RequesterSelectors.packs(state),
     roles:               RequesterSelectors.roles(state),
+    rolesTotalCount:     RequesterSelectors.rolesTotalCount(state),
+    browseData:          RequesterSelectors.browseData(state),
     proposalFromId:      (id)  =>
       RequesterSelectors.proposalFromId(state, id),
     proposalsFromIds:    (ids) =>
@@ -77,8 +89,8 @@ export const appState = (state) => {
     me:                  UserSelectors.me(state),
     users:               UserSelectors.users(state),
     memberOf:            UserSelectors.memberOf(state),
+    usersTotalCount:     UserSelectors.usersTotalCount(state),
     userFromId:          (id) => UserSelectors.userFromId(state, id),
-
   };
 };
 
@@ -135,6 +147,10 @@ export const appDispatch = (dispatch) => {
     getProposal:       (id)  => dispatch(RequesterActions.proposalRequest(id)),
     getProposals:      (ids) =>
       dispatch(RequesterActions.proposalsRequest(ids)),
+    getAllPacks:       (start, limit) =>
+      dispatch(RequesterActions.allPacksRequest(start, limit)),
+    getAllRoles:       (start, limit) =>
+      dispatch(RequesterActions.allRolesRequest(start, limit)),
     requestRoleAccess:     (id, userId, reason) =>
       dispatch(RequesterActions.roleAccessRequest(id, userId, reason)),
     requestPackAccess:     (id, userId, reason) =>
@@ -144,14 +160,15 @@ export const appDispatch = (dispatch) => {
     getMe:             ()    => dispatch(UserActions.meRequest()),
     getUser:           (id)  => dispatch(UserActions.userRequest(id)),
     getUsers:          (ids) => dispatch(UserActions.usersRequest(ids)),
-    getAllUsers:       ()    => dispatch(UserActions.allUsersRequest()),
     logout:            ()    => logout(dispatch),
+    getAllUsers:       (start, limit) =>
+      dispatch(UserActions.allUsersRequest(start, limit)),
 
   };
 };
 
 
-const logout = (dispatch) => {
+export const logout = (dispatch) => {
   return dispatch(AuthActions.logoutRequest()) &&
     dispatch(ChatActions.clearMessages()) &&
     dispatch(UserActions.resetAll()) &&

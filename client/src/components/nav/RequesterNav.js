@@ -50,7 +50,7 @@ class RequesterNav extends Component {
    * Entry point to perform tasks required to render
    * component
    */
-  componentDidMount() {
+  componentDidMount () {
     this.init();
   }
 
@@ -132,8 +132,12 @@ class RequesterNav extends Component {
       <Container>
         <Link to='/browse' id='next-requester-nav-browse'>
           <Button animated primary fluid>
-            <Button.Content visible>BROWSE</Button.Content>
-            <Button.Content hidden><Icon name='arrow right'/></Button.Content>
+            <Button.Content visible>
+              BROWSE
+            </Button.Content>
+            <Button.Content hidden>
+              <Icon name='arrow right'/>
+            </Button.Content>
           </Button>
         </Link>
         <Search

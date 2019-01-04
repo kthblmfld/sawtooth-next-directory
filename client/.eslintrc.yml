@@ -15,6 +15,10 @@ settings:
 
 rules:
   react/display-name: off
+  react/jsx-tag-spacing: [error, { beforeSelfClosing: never }]
+  react/jsx-one-expression-per-line: error
+  react/jsx-indent: [error, 2]
+  # react/jsx-no-bind: error
   curly: [error, multi-or-nest, consistent]
   default-case: error
   dot-notation: error
@@ -29,7 +33,6 @@ rules:
   array-bracket-spacing: [error, never]
   block-spacing: error
   brace-style: error
-  capitalized-comments: [error, always, { ignoreConsecutiveComments: true }]
   comma-dangle: [error, always-multiline]
   comma-spacing: error
   computed-property-spacing: error
@@ -40,7 +43,6 @@ rules:
   linebreak-style: error
   lines-around-comment: error
   max-len: [error, { code: 80, tabWidth: 2 }]
-  no-mixed-spaces-and-tabs: error
   no-trailing-spaces: error
   no-unneeded-ternary: error
   no-unreachable: error
@@ -66,3 +68,12 @@ rules:
   no-empty: error
   no-extra-boolean-cast: error
   no-mixed-operators: error
+  no-tabs: error
+  space-before-function-paren: error
+  arrow-spacing: error
+  generator-star-spacing: [error, { before: true, after: true }]
+  no-var: error
+  object-shorthand: error
+  prefer-arrow-callback: error
+  prefer-const: error
+  keyword-spacing: [error, { after: true }]

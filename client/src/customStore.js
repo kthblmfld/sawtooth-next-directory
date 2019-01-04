@@ -19,7 +19,7 @@ import createSagaMiddleware from 'redux-saga';
 
 
 import sagas from './sagas';
-import reducers from './redux';
+import reducers from './state';
 
 
 export let store;
